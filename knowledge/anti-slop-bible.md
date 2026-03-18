@@ -415,27 +415,29 @@ A design with:
 
 ---
 
-## Before You Start: 7 Constraints
+## Before You Start: 7 Decisions
 
-Set these BEFORE generating any design. Constraints create distinctiveness. Without them, AI will converge on the statistical average every time.
+Set these BEFORE generating any design. Intentional decisions create distinctiveness. Without them, AI converges on the statistical average.
 
-**1. Choose brand colors that are not purple, blue, or cyan.**
-Write down 2-3 specific hex values derived from the brand identity. If the brand has no established colors, pick a palette that reflects the product's personality. Earth tones, warm neutrals, rich jewel tones — anything with intention. Generate a full scale from each base color for utility use.
+**Important:** These decisions should push toward impressive, beautiful output — not toward safety. A stripped-down, over-restrained design that avoids all risk is just as bad as template slop. The goal is a site someone would screenshot and share, not one that merely avoids AI patterns.
 
-**2. Pick a distinctive font that is not Inter, Roboto, or Open Sans.**
-Name the exact display font and body font. Consider serifs (Fraunces, Newsreader, Source Serif), geometric sans (Satoshi, General Sans), or distinctive grotesks (Space Grotesk, Instrument Sans). Define the weight range you will use (e.g., 400 and 700 only).
+**1. Choose colors with personality.**
+Write down 2-3 specific hex values derived from the brand identity. If the brand has no established colors, pick a palette that reflects the product's personality and makes you feel something. Purple and blue are fine if they're intentional and considered — what matters is that the palette has depth (tinted neutrals, surface variations, accent hierarchy), not that it avoids popular hues.
+
+**2. Pick typography with presence.**
+Name the exact display font and body font. The font pairing should have character — it should feel like a deliberate choice. Consider serifs (Fraunces, Newsreader, Source Serif), geometric sans (Satoshi, General Sans), or distinctive grotesks (Space Grotesk, Instrument Sans). Inter is fine if the typography system itself is strong (dramatic scale, weight contrast, fluid sizing).
 
 **3. Define who the audience is, specifically.**
 Not "developers" — "senior backend engineers at companies with 50-200 employees who currently use AWS Lambda." The more specific the audience definition, the more distinctive the design decisions that follow from it.
 
 **4. Decide the one memorable thing.**
-Every great design has one element that makes it recognizable. Stripe has precise gradients. Linear has keyboard-first interaction. Vercel has dramatic typography on black. Decide what yours is before generating anything.
+Every great design has one element that makes it recognizable. Stripe has precise gradients. Linear has keyboard-first interaction. Vercel has dramatic typography on black. Decide what yours is before generating anything. This should be ambitious — not "clean spacing" but something that makes people pause.
 
-**5. Choose a layout approach that breaks the template sequence.**
-Do not follow the Hero → Logos → Features → Testimonials → Pricing → FAQ → Footer formula. Decide the first three sections based on what your specific audience needs to know, in what order, to make their decision.
+**5. Choose a layout approach that serves the content.**
+Think about what your specific audience needs to see, in what order, to make their decision. A developer tool might lead with a code example. A creative tool might lead with a gallery. The Hero → Logos → Features → Testimonials → Pricing → FAQ → Footer formula works for some products — the problem is using it without thought.
 
 **6. Write the hero headline with a specific, quantified benefit.**
 Before generating any design, write the actual headline by hand. It must name the audience or the problem and include a concrete claim. "Cut your deploy time from 45 minutes to 90 seconds." Not "The future of deployment is here."
 
 **7. Set the emotional tone — and how it varies by context.**
-Define 3-4 tone registers: marketing copy (confident, specific), onboarding (warm, encouraging), errors (direct, helpful), success states (brief, positive). A single flat tone across all contexts is a slop signal.
+Define 3-4 tone registers: marketing copy (confident, specific), onboarding (warm, encouraging), errors (direct, helpful), success states (brief, positive). A single flat tone across all contexts is a signal of unconsidered design.

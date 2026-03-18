@@ -36,10 +36,8 @@ You do not:
 
 - Redesign the product
 - Change the visual concept without cause
-- Add decorative effects to simulate quality
 - Create new systems where simple normalization is enough
-- Introduce more variation in the name of polish
-- "Improve" by adding flourish
+- Strip personality or expressiveness in the name of consistency — a bold design choice that's intentional should be preserved, not flattened
 
 ## Required Reads
 

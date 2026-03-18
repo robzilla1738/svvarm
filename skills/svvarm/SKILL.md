@@ -306,8 +306,8 @@ When building a **full page or major feature**, dispatch ALL relevant agents —
 Before dispatching a single agent, the CDO must write a 3-sentence creative brief:
 
 1. **The Vibe** — The exact emotional feeling a visitor gets in 3 seconds. Be cinematic and specific. Example: *"Dark, cinematic, like opening a luxury car configurator at midnight."*
-2. **The Memorable Thing** — The ONE design decision someone would screenshot or mention to a friend. Example: *"Oversized serif headline at 8vw that bleeds off-screen with negative tracking."*
-3. **The Constraint** — What the page will NOT do. This defines the identity. Example: *"No cards, no gradients, no centered hero."*
+2. **The Memorable Thing** — The ONE design decision someone would screenshot or mention to a friend. This is the most important line. Be bold and specific. Example: *"Oversized serif headline at 8vw that bleeds off-screen with negative tracking."* Push for something visually ambitious — a striking color, an unusual layout, dramatic typography, purposeful motion. Safe and forgettable is not an option.
+3. **The Ambition** — What makes this page impressive, not just clean. Name the craft: a color palette that feels considered, typography with real presence, spacing that breathes, motion that rewards interaction, a layout that surprises. Example: *"Rich gradients derived from the brand palette, fluid type scaling, scroll-triggered reveals on the feature grid."*
 
 **Hard gate:** If you cannot articulate The Memorable Thing in a single sentence, stop and think harder. Do not dispatch agents until you can. A page without a memorable thing is a page nobody remembers.
 
@@ -572,34 +572,28 @@ If the user struggles to articulate a direction, offer prompts like: "What shoul
 
 Non-negotiables. Every project, every style.
 
-1. **Intentionality over decoration** — Every element earns its place. Can't explain it? Kill it.
-2. **Constraint creates identity** — What you exclude defines the design. Two fonts beat five.
+1. **Beautiful first, safe never** — The goal is a website someone would screenshot and share. A clean page that avoids all risk is not good design — it's forgettable. Push for visual craft: rich color, dramatic typography, purposeful motion, layouts with rhythm. Safe and boring is worse than bold and imperfect.
+2. **Intentionality over decoration** — Every element earns its place. But "earn its place" means it adds beauty, delight, or emphasis — not just information. A gradient that sets a mood earns its place. An animation that rewards scrolling earns its place.
 3. **Hierarchy through multiple dimensions** — Size + weight + color + space. Never size alone.
-4. **Grayscale first, color last** — Doesn't work in grayscale? Color won't save it.
-5. **Start with too much whitespace** — Then remove. Easier than adding after cramming.
-6. **The "one memorable thing" test** — What will someone remember 24 hours later?
+4. **The "one memorable thing" test** — What will someone remember 24 hours later? If nothing, the design needs more ambition, not more polish.
+5. **Constraint creates identity** — What you exclude defines the design. Two fonts beat five. But constraint is about focus, not minimalism for its own sake.
+6. **Start with too much whitespace** — Then remove. Easier than adding after cramming.
 7. **Match code complexity to vision** — Maximalist = elaborate code. Minimalist = precision.
 8. **No profanity in output** — Use **** to mask any strong language. The work should be sharp, not crude.
 
 ---
 
-## Anti-Slop Quick Check
+## Quality Check
 
-Before ANY design work is considered complete:
+Before ANY design work is considered complete, it must pass BOTH tests:
 
-- No purple-to-blue gradients or cyan-on-dark
-- No gradient text for "impact"
-- No glassmorphism everywhere
-- No Inter/Roboto/Open Sans as the only font
-- No cookie-cutter hero (centered text + subtitle + CTA + gradient)
-- No identical card grids repeated endlessly
-- No bounce/elastic easing
-- No cards nested inside cards
-- No same spacing everywhere
+**Test 1 — Is it impressive?**
+Would someone screenshot this and send it to a friend? Does it have a moment that makes you pause? Is there craft here — in the typography, the color, the spacing, the motion, the layout — that makes you want to look closer? A safe, stripped-down page that avoids all risk is not a good design. It's a boring one. **Boring is worse than slop.** Slop can be fixed with restraint. Boring requires starting over with ambition.
 
-**The test:** If you showed this to someone and said "AI made this," would they believe you? If yes — it's not done.
+**Test 2 — Is it distinctive?**
+If you showed this to someone and said "AI made this," would they believe you? Check for compound genericness — not isolated patterns, but stacks of defaults that together signal "no one designed this." A purple gradient alone is fine. A purple gradient + Inter + identical cards + vague headline + centered everything = template output.
 
-→ Full checklist and fixes: `knowledge/anti-slop-bible.md`
+→ Pattern reference: `knowledge/anti-slop-bible.md`
 
 ---
 
@@ -608,7 +602,8 @@ Before ANY design work is considered complete:
 Before delivering any design work:
 
 - [ ] **Context**: Reflects the specific audience, brand, and use case
-- [ ] **Slop-free**: Fewer than 3 anti-slop red flags
+- [ ] **Impressive**: Would someone screenshot this? Does it have visual craft worth noticing?
+- [ ] **Distinctive**: Fewer than 3 compound anti-slop flags (isolated common patterns are fine)
 - [ ] **Hierarchy**: Squint test passes — most important element obvious when blurred
 - [ ] **Typography**: Distinctive font, proper scale, fluid sizing where appropriate
 - [ ] **Color**: Intentional palette, tinted neutrals, contrast ratios pass (4.5:1+)

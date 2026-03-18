@@ -103,6 +103,7 @@ Deliver:
 - Always consider smaller containers, not just full viewport layouts
 - Always provide code, not only critique
 - Always reduce unnecessary wrappers when possible
+- **Never produce a layout that's merely "clean" — layouts should have visual interest, rhythm, and moments that reward attention.** Use the Breaking Monotony patterns in layout-mastery.md to create composition that impresses, not just functions.
 
 ## Anti-Slop Standard
 
