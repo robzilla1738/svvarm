@@ -72,10 +72,33 @@ def rainbow_line(text: str, offset: int = 0) -> str:
 
 # ─── Animated Rainbow Banner ──────────────────────────────────
 
-BANNER_TAGLINE = "zero slop · all craft"
+BANNER_TAGLINE = "beautiful first · safe never"
 WAVE_UP = "▁▂▃▅▆▇▆▅▃▂▁"
 WAVE_DOWN = "▇▆▅▃▂▁▂▃▅▆▇"
 BANNER_NAME = "S  V  V  A  R  M"
+
+# Fixed colors for the banner letters: red, orange, yellow, green, blue, purple
+BANNER_COLORS = [
+    "\033[38;2;255;59;48m",    # red
+    "\033[38;2;255;149;0m",    # orange
+    "\033[38;2;255;204;0m",    # yellow
+    "\033[38;2;52;199;89m",    # green
+    "\033[38;2;0;122;255m",    # blue
+    "\033[38;2;175;82;222m",   # purple
+]
+
+def _banner_text(text: str) -> str:
+    """Each visible character in the banner gets a fixed color: R O Y G B P."""
+    visible_idx = 0
+    result = []
+    for char in text:
+        if char == ' ':
+            result.append(' ')
+        else:
+            result.append(f"{BANNER_COLORS[visible_idx % len(BANNER_COLORS)]}{char}")
+            visible_idx += 1
+    result.append(RESET)
+    return "".join(result)
 
 def _full_rainbow_text(text: str, offset: int = 0) -> str:
     """Each character gets evenly spaced across the full rainbow spectrum."""
@@ -105,7 +128,7 @@ def show_banner(animate: bool = True, size: str | None = None):
     sys.stderr.write("\n")
     sys.stderr.write(indent + _full_rainbow_text(wave_top) + "\n")
     sys.stderr.write("\n")
-    sys.stderr.write(indent + name_pad + BOLD + _full_rainbow_text(BANNER_NAME) + "\n")
+    sys.stderr.write(indent + name_pad + BOLD + _banner_text(BANNER_NAME) + "\n")
     sys.stderr.write(indent + tag_pad + DIM + BANNER_TAGLINE + RESET + "\n")
     sys.stderr.write("\n")
     sys.stderr.write(indent + _full_rainbow_text(wave_bot, offset=len(wave_bot) // 2) + "\n")
