@@ -86,7 +86,7 @@ Use step indicators to show progress. Before each question, run:
 1. "What are we building?" — Get specifics. Push for detail. "A landing page" isn't enough — ask follow-up: "Landing page for what? A dev tool? A SaaS product? A personal brand? What's the one thing a visitor should do when they land?" Get the product, the purpose, and the core user action.
 2. "What's the tech stack?" — Framework, CSS approach, any UI libraries already in use. If they don't have one yet, recommend based on what they're building.
 3. "Who's this for and what should they feel when they use it?" — Get the emotional target with depth. "Developers who should feel impressed" → push: "Impressed how? Like they found a hidden gem? Like this is the most polished tool they've ever seen? Like someone who actually cares about craft made this?" The emotional target drives every design decision.
-4. "Pick a style direction" — Present the style guide menu. They can also describe their own: "moody and cinematic", "clean but not boring", "brutalist with warmth". Anything goes — if it doesn't match a guide exactly, you'll adapt.
+4. "What's the visual direction?" — Let them describe it in their own words: "moody and cinematic", "clean but not boring", "brutalist with warmth", "bright and playful", "dark and premium". Anything goes. Don't present a menu — just listen and adapt to what they describe.
 5. "What visual direction do you want to avoid?" — Frame as concepts, not brands. Offer examples: "Flat corporate dashboards", "generic SaaS templates", "everything-is-a-card layouts", "safe and forgettable", "over-decorated maximalism". Also ask what they're drawn to aesthetically — textures, motion, typography, whitespace, etc.
 6. "Anything else I should know? Brand colors, existing assets, light/dark preference, constraints?" — Catch-all. If nothing, move on.
 
@@ -112,7 +112,7 @@ After all questions are answered:
 [Who uses this + the specific emotional reaction we're designing for + WHY that emotion matters for this product]
 
 ## Style Direction
-**Guide**: [chosen style guide or custom description]
+**Direction**: [the user's described visual direction, in their words]
 **Personality traits**: [3-5 adjectives defining the visual personality]
 **The feeling**: [One sentence — the exact emotional response in the first 3 seconds]
 
@@ -139,7 +139,7 @@ After all questions are answered:
 # Design Decisions Log
 
 ## [date] — Project Initialization
-- **Style direction**: [guide] — [why this fits what they described]
+- **Style direction**: [direction] — [why this fits what they described]
 - **Theme**: [light/dark/both] — [reasoning]
 - **Key constraint**: [the most important constraint]
 - **Emotional target**: [the feeling, in their words]
@@ -147,7 +147,6 @@ After all questions are answered:
 
 Then:
 - Create `.svvarm/memory/` directory for agent memories
-- Load the matching style guide from `knowledge/style-guides/`
 - Show success: `uv run <plugin_root>/scripts/ui.py ok "Project initialized. Design brief at .svvarm/context.md"`
 
 **Then present next steps.** Give 3 specific actions tailored to THEIR project (referencing their style, audience, and goals), plus an open option:
@@ -181,7 +180,7 @@ Set up svvarm for an **existing project**. Scans the codebase, identifies what's
 
 **Ask remaining questions ONE AT A TIME** — skip anything already determined from the scan:
 1. "Who's this for and what should they feel?" (if not evident)
-2. "What style direction fits what you already have?" (present menu with recommendation based on scan)
+2. "What style direction fits what you already have?" (suggest a direction based on scan, let them refine)
 3. "Any sites you're drawing inspiration from?" (if not evident)
 4. "Anything else I should know?" (catch-all)
 
@@ -296,7 +295,7 @@ Parse the user's natural language and dispatch accordingly.
 |------------------------------|----------|
 | "build me a..." / "create a..." / "design a..." | **Full Build Workflow** (Phase 0→4, starts with Creative Brief) |
 | "make the homepage" / "build the landing page" / "go for it" | **Full Build Workflow** (see below) |
-| "I want that clean dev-tool look" / "ultra-minimal" / "high-end premium" | CDO loads matching style guide + case studies for reference |
+| "I want that clean dev-tool look" / "ultra-minimal" / "high-end premium" | CDO uses the described direction + case studies for reference |
 
 #### Full Build Workflow
 
@@ -348,11 +347,11 @@ With all design decisions in hand, the CDO writes the actual code. Follow this e
 4. **Layout Lead HTML skeleton** → Build the complete DOM structure with semantic tags, classes, and `{{placeholder}}` markers
 5. **Typography role styles** → Apply font sizes, weights, line-heights, tracking to the skeleton elements
 6. **Content Lead copy** → Insert final copy into all placeholder positions
-7. **Color/surface application** → The CDO applies Color Lead's role tokens to Layout Lead's HTML elements: `background: var(--color-bg)` on body, `background: var(--color-surface)` on cards, `color: var(--color-text)` on text elements, `border-color: var(--color-border)` on separators. Use the active style guide's component examples as reference.
+7. **Color/surface application** → The CDO applies Color Lead's role tokens to Layout Lead's HTML elements: `background: var(--color-bg)` on body, `background: var(--color-surface)` on cards, `color: var(--color-text)` on text elements, `border-color: var(--color-border)` on separators. Use the component recipes in `knowledge/component-mastery.md` as reference.
 
 **Dark mode cross-check:** If the project includes dark mode, verify that Color Lead's dark text color (e.g., `oklch(93% 0 0)`) combined with Typography Lead's dark mode font weight (e.g., `300`) produces readable text. Light weight + muted color on dark backgrounds can fail contrast. Adjust weight up or lightness up if needed.
 
-8. **Interaction/motion** → The CDO adds hover states, focus styles, transitions, and scroll-triggered effects. Pull interaction CSS from the active style guide's "Interaction CSS" section and adapt to the page's components. Reference `knowledge/interaction-mastery.md` for patterns not covered by the style guide.
+8. **Interaction/motion** → The CDO adds hover states, focus styles, transitions, and scroll-triggered effects. Reference `knowledge/interaction-mastery.md` and `knowledge/motion-mastery.md` for interaction patterns. Adapt to the project's style direction described in the design brief.
 9. **Memorable Thing check** → **HARD GATE.** Before proceeding to Phase 3, verify The Memorable Thing from the Creative Brief is present and visible. If it's missing or diluted, fix it now.
 
 **Conflict resolution rules:**
@@ -480,7 +479,6 @@ When dispatching ANY specialist:
    - The full design brief from context.md
    - The agent's own memory content (if any)
    - Any relevant cross-agent decisions
-   - The style guide content (if a style was chosen)
    - The Creative Brief (Vibe, Memorable Thing, Constraint) — for Full Build dispatches
    - **For Content Lead dispatches:** Always include: "Never include profanity. Use **** to mask any strong language."
    This is what makes agents "remember" — they don't have persistent state, YOU provide it.
@@ -539,11 +537,11 @@ Phase names map to agents: `slop` → Slop Auditor, `typography` → Typography 
 
 **After the specialist returns — VERIFY before delivering:**
 1. **Check against the brief.** Re-read `.svvarm/context.md` and compare the agent's output:
-   - Does the palette match the stated style direction? (Dark Premium should produce deep charcoal/navy with desaturated accents — NOT warm amber unless the user specifically requested warmth)
+   - Does the palette match the stated style direction? (e.g., a "dark and premium" direction should produce deep charcoal/navy with desaturated accents — NOT warm amber unless the user specifically requested warmth)
    - Do the font choices match the personality traits in the brief?
    - Does the copy reflect the audience and emotional target?
    - Does the layout avoid the anti-patterns listed in the brief?
-2. **If there's a mismatch**, flag it and redirect: "The Color Lead went warm amber, but your brief says Dark Premium with desaturated accents. Let me redirect with clearer constraints."
+2. **If there's a mismatch**, flag it and redirect: "The Color Lead went warm amber, but your brief says dark and premium with desaturated accents. Let me redirect with clearer constraints."
 3. **If it passes**, layer your CDO voice on top — agree, push back, add context, synthesize
 4. Save key decisions: run `uv run <plugin_root>/scripts/memory.py save {agent-name} "summary..."` via Bash
 5. Log significant decisions to `.svvarm/decisions.md`
@@ -562,24 +560,11 @@ Phase names map to agents: `slop` → Slop Auditor, `typography` → Typography 
 
 ---
 
-## Style Guide Menu
+## Style Direction
 
-When onboarding, present these options:
+Don't constrain users to preset styles. Let them describe their visual direction in their own words. The design brief captures their description, and agents derive all aesthetic decisions — colors, typography, spacing, motion — from that description combined with the knowledge files (color-mastery, typography-mastery, layout-mastery, etc.) and case studies.
 
-| Style | Vibe | Best For |
-|-------|------|----------|
-| **Brutalist Raw** | Raw, structural, anti-decoration | Portfolios, editorial, dev tools |
-| **Playful Bold** | Fun, energetic, personality-forward | Consumer apps, gaming, creative tools |
-| **Organic Warm** | Natural, tactile, handmade | Wellness, sustainability, food, artisan |
-| **Editorial Luxury** | Magazine-quality, refined (coming soon) | Fashion, luxury, publishing |
-| **Minimal Refined** | Ruthless restraint, precision | SaaS, productivity, dashboards |
-| **Retro-Futuristic** | Synthwave meets modern (coming soon) | Entertainment, gaming, music |
-| **Industrial Utilitarian** | Function-first, no ornament (coming soon) | Data tools, enterprise, operations |
-| **Dark Premium** | High-end dark interfaces | Creative tools, media, premium SaaS |
-
-Style guides at `knowledge/style-guides/`. Load the full guide when a direction is chosen.
-
-**If the user picks a style marked "coming soon"**, tell them that guide is still in development and suggest the closest available alternative (e.g., Editorial Luxury → Minimal Refined, Retro-Futuristic → Dark Premium, Industrial Utilitarian → Brutalist Raw).
+If the user struggles to articulate a direction, offer prompts like: "What should it feel like? Describe it like you'd describe a place, a mood, or a vibe." Examples: "clean and confident like a developer tool", "warm and earthy like a craft brand", "dark and cinematic", "bright, fun, high-energy", "editorial and refined".
 
 ---
 

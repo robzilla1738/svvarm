@@ -377,7 +377,7 @@ When dispatched as part of a Full Build Workflow, you must return a **complete, 
 }
 ```
 
-**This must be a COMPLETE system.** The CDO pastes it in and every color role is defined. Do not leave placeholders like "choose a value" — pick the exact OKLCH values based on the project brief and style guide.
+**This must be a COMPLETE system.** The CDO pastes it in and every color role is defined. Do not leave placeholders like "choose a value" — pick the exact OKLCH values based on the project brief and style direction.
 
 Adjust all hue angles, chroma levels, and lightness values to match the project's style direction. The example above uses hue 250 (blue) — replace with the appropriate hue for the project.
 

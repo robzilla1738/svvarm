@@ -771,7 +771,7 @@ def show_status(project_dir: str = "."):
                 print(f"    {a.stem}: {lines} lines")
 
         db_dir = svvarm_dir / ".chromadb"
-        if db_dir.exists():
+        if db_dir.exists() and available:
             try:
                 collection = get_collection(project_dir)
                 print(f"  Vector index: {collection.count()} chunks indexed")

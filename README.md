@@ -153,19 +153,9 @@ Without an embedding backend, memory still works. Save, read, and recall all use
 
 **Git-friendly:** Memory files are plain markdown — readable, diffable, committable. The vector index (`.svvarm/.chromadb/`) is a derived cache that rebuilds automatically. Add it to `.gitignore`.
 
-## Style guides
+## Style direction
 
-5 complete style guides with specific OKLCH colors, font pairings, spacing tokens, and motion rules:
-
-| Style | Vibe | Best for |
-|-------|------|----------|
-| **Dark Premium** | Sleek, cinematic, high-end | Creative tools, premium SaaS |
-| **Minimal Refined** | Ruthless restraint, precision | SaaS, productivity, dashboards |
-| **Brutalist Raw** | Raw, structural, anti-decoration | Portfolios, editorial, dev tools |
-| **Organic Warm** | Natural, tactile, handmade | Wellness, food, artisan brands |
-| **Playful Bold** | Vibrant, energetic, personality-forward | Consumer apps, gaming, creative |
-
-You can also describe your own direction ("moody and cinematic", "clean but not boring") and svvarm will adapt.
+Describe your visual direction in your own words — "moody and cinematic", "clean but not boring", "dark and premium", "bright and playful". svvarm's agents derive all aesthetic decisions (colors, typography, spacing, motion) from your description combined with the knowledge library.
 
 ## Knowledge library
 

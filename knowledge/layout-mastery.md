@@ -20,7 +20,7 @@ Whenever possible, components should adapt to their available space rather than 
 **Mobile Collapse Rule:** Any asymmetric or complex multi-column layout above the `md` breakpoint MUST aggressively fall back to a strict, single-column layout (e.g., `w-full px-4 py-8`) on mobile to prevent horizontal scrolling and layout breakage.
 
 ### 4. Alignment Directs Attention
-Center alignment is appropriate for discrete, self-contained elements (short hero text, isolated buttons). Left alignment provides a strong reading edge for body text and lists. Intentional asymmetry guides the eye more effectively than default centering.
+Page containers and section wrappers should be centered with `max-width` + `margin-inline: auto` — this is the standard, expected page structure. Hero sections, CTAs, and short headings center naturally. Within those centered containers, left-align body text, paragraphs, and lists for a strong reading edge. Intentional asymmetry is an accent technique for emphasis, not the default composition.
 
 ### 5. Grid Over Flex-Math
 NEVER use complex flexbox percentage math (e.g., `width: calc(33.33% - 1rem)`). ALWAYS use CSS Grid (`grid-template-columns: repeat(3, 1fr)`) for reliable, gap-aware structures.
@@ -357,11 +357,11 @@ A long grid of identical cards reads as a database table, not an interface.
 
 **Fix:** Introduce rhythm by varying card sizes based on importance, inserting distinct content blocks (e.g., a quote or image), or using asymmetric column widths (e.g., `2fr 1fr`).
 
-### 4. Indiscriminate Centering
+### 4. Centered Body Text
 
-Centering long paragraphs or complex forms makes the starting edge unpredictable, reducing readability.
+Centering long paragraphs, multi-line descriptions, or complex forms makes the starting edge unpredictable, reducing readability.
 
-**Fix:** Left-align body text, form labels, and lists. Center only discrete elements like hero headlines, standalone buttons, or short metadata.
+**Fix:** Center page containers, section wrappers, hero headlines, CTAs, and short standalone elements normally. Left-align body text, paragraphs longer than two lines, form labels, and lists *within* those centered containers. The page itself should feel centered and balanced — the text inside reads left-aligned.
 
 ### 5. Uniform Padding
 
@@ -404,9 +404,9 @@ Pages with minimal content leave footers awkwardly placed in the middle of the s
 The "3 equal cards horizontally" feature row is a massive AI cliché.
 **Fix:** Use a 2-column Zig-Zag, an asymmetric grid (e.g., `2fr 1fr`), a Bento box, or a horizontal scrolling overflow approach instead.
 
-### 9. The Centered Hero Bias
-Centering text over a generic image in the Hero section is the default fallback of uninspired design.
-**Fix:** Force "Split Screen" (50/50), "Left Aligned content / Right Aligned asset", or "Asymmetric White-space" structures to create premium tension.
+### 9. The Generic Hero
+A centered hero is not inherently wrong — it is a proven, effective layout. The problem is pairing it with a generic stock image, vague headline, and default gradient.
+**Fix:** Keep the centered hero if the content is strong (specific headline, real product screenshot, distinctive typography). Use split-screen or asymmetric layouts as alternatives when the content benefits from side-by-side presentation, not as a rule.
 
 ## Decision Rules
 
@@ -415,7 +415,7 @@ When building or reviewing a layout:
 * Choose fluid primitives over rigid media queries.
 * Choose distinct size contrast over uniform grids.
 * Choose spacing for grouping over borders and lines.
-* Choose alignment that supports reading flow over default centering.
+* Center page containers and sections; left-align body text within them.
 * Determine component hierarchy before applying any decoration.
 
 If the structural relationships (grouping, sequence, importance) are unclear without borders or colors, the layout is incomplete.

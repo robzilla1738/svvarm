@@ -469,7 +469,7 @@ body {
 
 **Every `clamp()` value must use the formula for 320px → 1200px scaling.** Reference the clamp() table in typography-mastery.md.
 
-Adjust font choices, weights, and scale values to match the project brief and style guide. The example above is a starting template — customize everything.
+Adjust font choices, weights, and scale values to match the project brief and style direction. The example above is a starting template — customize everything.
 
 ---
 

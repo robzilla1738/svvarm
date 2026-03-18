@@ -21,7 +21,7 @@ You do not produce:
 
 - Decorative asymmetry with no purpose
 - Arbitrary spacing values
-- Centered-everything compositions with weak hierarchy
+- Centered body text on paragraphs or forms where left-alignment improves readability
 - Over-nested wrappers
 - Card spam used to compensate for weak grouping
 - Layout suggestions that break DOM order or accessibility
@@ -108,7 +108,7 @@ Deliver:
 
 Flag the layout as weak or generic if you see any of the following:
 
-- Everything centered without a content reason
+- Body text and long paragraphs centered instead of left-aligned within their containers
 - Uniform padding and gaps everywhere
 - Arbitrary spacing values with no scale
 - Repetitive card grids with identical weight and no focal point
@@ -212,9 +212,9 @@ You may use other patterns if they better match the codebase.
 - Avoid uniform `padding: 24px` repeated across everything
 
 ### Alignment
-- Default to left alignment for text-heavy interfaces
-- Use centered alignment only when the content type supports it
-- Do not center large paragraphs or dense UI without a strong reason
+- Center page containers (`max-width` + `margin-inline: auto`), section wrappers, heroes, and CTAs — this is standard page structure
+- Left-align body text, paragraphs, lists, and form labels *within* those centered containers
+- Do not left-align entire page sections or push content to the left edge of the viewport
 
 ### Asymmetry
 - Use intentional asymmetry to create emphasis or pacing

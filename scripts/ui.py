@@ -294,5 +294,5 @@ if __name__ == "__main__":
         print()
 
         success("Design system initialized")
-        warn("No style guide selected yet")
+        warn("No style direction set yet")
         error("Slop score: 72 — needs redesign")

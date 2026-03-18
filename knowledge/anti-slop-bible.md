@@ -171,7 +171,7 @@ Every section uses `text-center` and `mx-auto`. Hero centered, features centered
 - **What it looks like:** Scroll through the page and everything sits in the middle. No content extends to the edges, no asymmetry, no variation in alignment.
 - **Why AI does it:** Centered layouts are "safe" — they work at any viewport width and rarely look broken. Centering is the lowest-risk alignment choice.
 - **How to detect:** Check text alignment across sections. If more than 70% of sections use centered text, flag it.
-- **Fix:** Left-align body text (it is more readable for paragraphs longer than two lines). Use asymmetric layouts where content and imagery sit on opposite sides. Create rhythm by alternating between full-width, contained, and offset sections.
+- **Fix:** Page containers and sections should remain centered — that is standard page structure, not slop. The fix is to left-align body text *within* those centered containers (more readable for paragraphs longer than two lines). Create rhythm by alternating between full-width, contained, and offset sections. Asymmetric layouts are an accent, not the default.
 
 **Pattern 18: Cards Inside Cards (Cardocalypse)**
 

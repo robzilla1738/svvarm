@@ -5,7 +5,7 @@ This file defines the strict rules for sourcing, sizing, and styling icons.
 ## 1. Approved Icon Libraries
 Never hallucinate raw SVG paths for icons. Never use FontAwesome, Material Icons, or Heroicons unless strictly required by the existing codebase. 
 
-Use ONLY the following libraries based on the active style guide:
+Use ONLY the following libraries based on the project's style direction:
 
 *   **Lucide (`lucide-react` / `lucide-vue-next`)**: The default for general use. Neutral, clean, and highly legible.
 *   **Phosphor Icons (`@phosphor-icons/react` / `@phosphor-icons/vue`)**: The default for premium, editorial, or multi-weight needs. 

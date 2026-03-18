@@ -24,7 +24,7 @@ Never build interactive elements out of `<div>` or `<span>` tags.
 
 ## 3. Tailwind Translation Protocol
 When working in a Tailwind environment, you MUST map our OKLCH design tokens to the Tailwind config.
-Do not fall back to default Tailwind colors (`bg-gray-500`, `text-indigo-600`) if a style guide is active. 
+Do not fall back to default Tailwind colors (`bg-gray-500`, `text-indigo-600`) when design tokens are defined.
 
 ```js
 // Required mapping structure for tailwind.config.js / tailwind.config.ts
@@ -66,10 +66,10 @@ The UI must look expensive even when empty.
 Use a solid block colored with `--color-surface-elevated` or `--color-surface` and place a single, perfectly centered, muted Lucide/Phosphor icon inside it to indicate the media type (e.g., `<Image />` or `<Video />`).
 
 **For photographic placeholders:**
-Use high-quality Unsplash source URLs, but apply parameters that match the active style guide.
-- *Minimal Refined / Brutalist Raw*: `https://images.unsplash.com/photo-[id]?auto=format&fit=crop&w=800&q=80&grayscale=true`
-- *Organic Warm*: Add `&tint=warm` or select nature/architecture imagery.
-- *Playful Bold*: Select highly saturated, vibrant imagery.
+Use high-quality Unsplash source URLs, but apply parameters that match the project's style direction.
+- *Minimal/monochrome directions*: `https://images.unsplash.com/photo-[id]?auto=format&fit=crop&w=800&q=80&grayscale=true`
+- *Warm/natural directions*: Add `&tint=warm` or select nature/architecture imagery.
+- *Bold/vibrant directions*: Select highly saturated, vibrant imagery.
 
 ## 5. Framework Architecture (React & Next.js)
 If building for modern frameworks like Next.js App Router:
@@ -82,7 +82,7 @@ If building for modern frameworks like Next.js App Router:
 
 ## 7. Component Recipes
 
-Complete, token-based CSS recipes for common components. All use `var(--color-*)` and `var(--space-*)` tokens so they adapt to any style guide.
+Complete, token-based CSS recipes for common components. All use `var(--color-*)` and `var(--space-*)` tokens so they adapt to any style direction.
 
 ### Button (Primary + Secondary)
 
