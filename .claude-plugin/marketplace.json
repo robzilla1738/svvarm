@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "svvarm",
+  "description": "Opinionated design director for frontend interfaces. One command, zero AI slop.",
+  "owner": {
+    "name": "Robert",
+    "url": "https://github.com/robzilla1738"
+  },
+  "plugins": [
+    {
+      "name": "svvarm",
+      "description": "Opinionated design director for frontend interfaces. Orchestrates 7 specialist agents for typography, color, layout, content, polish, production, and slop detection.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Robert",
+        "url": "https://github.com/robzilla1738"
+      },
+      "source": "./",
+      "category": "design"
+    }
+  ]
+}

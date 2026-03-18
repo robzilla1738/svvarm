@@ -1,0 +1,13 @@
+{
+  "name": "svvarm",
+  "description": "Opinionated design director for frontend interfaces. Orchestrates 7 specialist agents for typography, color, layout, content, polish, production, and slop detection. One command, zero AI slop.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Robert",
+    "url": "https://github.com/robzilla1738"
+  },
+  "repository": "https://github.com/robzilla1738/svvarm",
+  "homepage": "https://github.com/robzilla1738/svvarm",
+  "license": "MIT",
+  "keywords": ["design", "frontend", "ui", "css", "typography", "color", "layout", "slop", "anti-slop"]
+}
