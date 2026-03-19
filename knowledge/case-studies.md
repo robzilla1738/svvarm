@@ -128,6 +128,62 @@ Teenage Engineering makes synthesizers, speakers, and accessories that look like
 
 ---
 
+## Aesop — Editorial Commerce
+
+Aesop sells skincare. Their website sells an experience. The design proves that a commerce site can function as a literary publication — and that restraint in color and layout can make products feel more luxurious than any gold gradient.
+
+**Typography as the Primary Design Element.** Aesop's site is built on typography. They use a serif typeface (a custom cut close to Suisse Works) for body text and a clean sans-serif for navigation and UI elements. Product descriptions read like short essays — 3-4 sentences of carefully written prose, not bullet-point feature lists. Headings are set in the serif at sizes that would feel at home in a literary magazine (36-48px, weight 400). The typography carries the entire brand personality: calm, literate, considered. Most e-commerce sites use typography to label things. Aesop uses typography to create atmosphere.
+
+**Photography IS the Product.** Aesop's product photography uses a strict formula: product on a single-color background (warm stone, terracotta, deep olive, or matte black), shot with soft directional lighting that emphasizes texture — the amber of the glass, the matte finish of the pump, the grain of the label paper. There are no lifestyle shots with smiling models. The product alone, beautifully lit, is the entire visual. The photography palette rotates by collection, but within a collection, every image shares the same background tone, lighting angle, and composition. This consistency means you can remove all text from the page and still identify it as Aesop.
+
+**Severe Color Restraint.** Aesop's web palette is essentially three colors: warm off-white (`#FFFEF2` approximately), near-black text (`#252525`), and the amber of their signature bottles. There are no accent colors, no brand blue, no CTA-red. Links are styled as underlined black text, not colored text. Buttons use a thin black border on white, not a filled colored background. The restraint is so severe that the product photography — amber bottles on terracotta — becomes the most colorful element on any page. The products provide the color. The design stays out of the way.
+
+**Content Dictates Layout.** Aesop's page layouts are asymmetric and editorial. A product page might have a full-bleed image on the left (60% width) with text on the right (40%), followed by a full-width text block, followed by a grid of related products. The layout responds to the content rather than forcing content into a template. This is the opposite of AI-generated layouts where every section follows the same card-grid pattern. Aesop's pages feel curated because they are — each page has a unique composition that serves its specific content.
+
+**What You Can Steal:** Use a serif typeface for product or service descriptions to create editorial warmth. Let photography provide the color and keep the UI palette to 2-3 neutrals. Write product descriptions as short prose, not feature bullets. Vary your page layouts per content type instead of using one template everywhere. Make buttons minimal (border, not fill) to reduce visual noise.
+
+**Lesson:** Restraint in color and decoration makes the product the hero — the design's job is to frame, not compete.
+
+---
+
+## The Pudding — Data Journalism
+
+The Pudding publishes "visual essays" — data-driven stories where the visualization IS the narrative. Each article is a custom web experience with a single visual conceit that the entire story revolves around. No templates. No article pages. Every piece is a bespoke scroll experience.
+
+**One Visual Conceit Per Article.** Each Pudding essay commits to one visualization approach and rides it for the entire piece. An essay about pop music might use a single scrolling beeswarm chart that transforms as you read. An essay about film dialogue might use a stacked timeline that fills with color. The discipline is remarkable: where most data journalism sprinkles different chart types throughout an article, The Pudding picks one visual language and deepens it. This creates narrative coherence — the reader learns to read the visual in the first scroll, then experiences increasingly complex data through that same lens.
+
+**Scroll-Driven Visualization.** The Pudding pioneered "scrollytelling" — narrative tied to scroll position using `IntersectionObserver` and canvas/SVG rendering. As the reader scrolls, explanatory text appears in fixed-position panels while the visualization transitions behind it. The scroll IS the interaction — there are no buttons to click, no filters to toggle, no dashboards to explore. The reader's only job is to scroll, and the story unfolds at the pace the author designed. This is Apple's scroll-driven storytelling applied to journalism rather than product marketing.
+
+**Content Dictates Form.** The Pudding doesn't have a design system in the traditional sense. Each essay has its own typography, color palette, and layout — chosen to serve that specific story. An essay about hip-hop might use bold sans-serifs and high-contrast colors. An essay about classical music might use thin serifs and muted tones. The form follows the content's emotional needs, not a brand guideline. The only consistent element is quality — every piece feels meticulously crafted, even though they look nothing alike.
+
+**Minimalist Interface Layer.** Despite the visual complexity of the data, The Pudding's UI layer is almost invisible. Navigation is a simple header with the logo and a hamburger menu. Article pages have no sidebars, no related content widgets, no comment sections, no social share bars. The visualization occupies the full viewport. The message is clear: this content deserves your full attention, and the UI will not compete for it. On mobile, the text sections expand to full width, and the visualizations simplify (fewer data points, larger labels) rather than attempting to shrink a desktop visualization.
+
+**What You Can Steal:** If your page has a complex visual element (a chart, a demo, a showcase), commit to it fully — make it the dominant element and reduce everything else. Use scroll position to drive narrative progression instead of requiring user clicks. Let different sections of your site have different visual treatments if the content demands it. Remove everything that competes with the primary visual (sidebars, widgets, share bars).
+
+**Lesson:** When content is the product, the interface should disappear — one deep visualization beats five shallow ones.
+
+---
+
+## Wise — Accessible Fintech
+
+Wise (formerly TransferWise) handles international money transfers — a domain where clarity isn't a design preference, it's a fiduciary requirement. Every user is trusting Wise with real money across currencies, regulations, and time zones. The design must make complexity feel simple without hiding it.
+
+**Clarity in Complex Flows.** Wise's transfer flow is a masterclass in progressive disclosure. The initial screen shows two fields: "You send" and "They receive," with real-time currency conversion. That's it — two inputs and one exchange rate. But beneath that simplicity, Wise handles routing, compliance checks, payment methods, recipient details, and fee breakdowns. Each step is revealed only when needed: payment method after amount, recipient after payment, review after recipient. The user never sees the full complexity at once, but every piece of information is available exactly when it's relevant.
+
+**Fee Transparency as Design.** Most financial products bury fees in footnotes. Wise makes the fee breakdown a primary UI element — a visual comparison showing Wise's fee alongside bank fees, with animated bar charts and explicit numbers. "You save £24.50 compared to your bank" appears on the transfer summary. This is UX writing and visual design working together: the copy is specific (exact amounts, not percentages), the visualization is comparative (bars, not tables), and the placement is prominent (in the flow, not in a separate page). Transparency isn't a feature — it's the design language.
+
+**Progressive Disclosure Done Right.** Wise's settings and account management use progressive disclosure without hiding information. The account page shows your balances prominently. Tap a balance to see transactions. Tap a transaction to see details. Each level of depth adds detail without losing context — the balance stays visible as a header when you're viewing transactions. The navigation pattern is: list → detail → sub-detail, with clear back paths and breadcrumbs at every level. No user ever feels lost because the information hierarchy mirrors how people think about money: "How much do I have?" → "Where did it go?" → "What was this specific charge?"
+
+**Illustration That Explains, Not Decorates.** Wise uses simple, flat illustrations throughout onboarding and help content. But critically, every illustration has a job: it explains a concept. The "how it works" section uses an illustration showing two bank accounts in different countries with an arrow between them — directly representing the multi-currency routing that makes Wise cheaper than banks. The onboarding illustrations show the app screens at each step, not abstract people-with-laptops. Even the error illustrations are specific: a map with a pin for "address verification needed," a document icon for "ID upload required." No illustration exists purely for visual warmth.
+
+**Accessible by Default.** Wise serves users across 80+ countries, dozens of languages, and every level of financial literacy. Their input fields use large, clear labels above the field (never inside as placeholders). Error messages appear inline with specific fixes. The color palette has high contrast ratios across all text sizes. Touch targets are generous (48px minimum). The currency selector uses both the flag, the currency code, AND the currency name ("British Pound — GBP") to accommodate users who think in different terms. Nothing is clever. Everything is clear.
+
+**What You Can Steal:** For complex flows, show only what's needed at each step — but never hide information the user might want to verify. Make costs and consequences explicit at the point of action, not in a separate page. Use illustrations only when they explain something the text cannot. Default to generous touch targets and high-contrast text. When users handle money, data, or sensitive information, clarity beats personality every time.
+
+**Lesson:** Accessible design is not a constraint on quality — it IS quality. Serving the broadest audience forces the clearest thinking.
+
+---
+
 ## Implementable Techniques
 
 Copy-paste-ready code for the techniques referenced in the case studies above. Use these as starting points, not templates.

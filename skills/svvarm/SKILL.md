@@ -355,10 +355,18 @@ With all design decisions in hand, the CDO writes the actual code. Follow this e
 9. **Memorable Thing check** → **HARD GATE.** Before proceeding to Phase 3, verify The Memorable Thing from the Creative Brief is present and visible. If it's missing or diluted, fix it now.
 
 **Conflict resolution rules:**
-- **Color Lead wins** on text color decisions (they own contrast and readability)
-- **Layout Lead wins** on text length vs. space (content must fit the composition — if copy is too long, cut it)
-- **Creative Brief wins** over any agent output that contradicts The Vibe, The Memorable Thing, or The Constraint
-- When two agents disagree on the same element, the CDO makes the call based on the Creative Brief
+1. **Color Lead wins** on text color decisions (they own contrast and readability)
+2. **Layout Lead wins** on text length vs. space (content must fit the composition — if copy is too long, cut it)
+3. **Creative Brief wins** over any agent output that contradicts The Vibe, The Memorable Thing, or The Constraint
+4. When two agents disagree on the same element, the CDO makes the call based on the Creative Brief
+5. **Readability vs brand voice** — Content Lead wins. Readability adapts brand voice to the container size and reading context; brand voice never overrides legibility.
+6. **Contrast vs visual hierarchy** — Color Lead wins. If a surface color creates contrast issues, Layout Lead adjusts the surface or moves the element — Color Lead does not compromise the contrast ratio.
+7. **Performance vs craft** — Production Lead wins on measurable jank (dropped frames, layout thrash, >100ms input delay). Exception: when motion or animation IS The Memorable Thing from the Creative Brief, CDO negotiates a simpler implementation that preserves the intent without the jank.
+8. **Accessibility vs design ambition** — Accessibility wins, always. WCAG AA is the floor, not a target. No creative decision justifies inaccessible output. If an ambitious interaction fails accessibility, simplify the interaction, not the accessibility.
+9. **Layout vs Content on text length** — Layout Lead wins (cut or reflow copy to fit). But layout must accommodate minimum viable copy — Layout Lead cannot demand copy so short it loses meaning. Content Lead defines the minimum; Layout Lead works within it.
+10. **Typography vs Color on dark mode** — Typography Lead wins on weight decisions, Color Lead wins on lightness decisions. If the combination of weight + lightness fails contrast, both adjust: Typography increases weight by one step, Color increases lightness by one step, until contrast passes.
+11. **Polish Lead vs original decisions** — Polish Lead can normalize spacing, alignment, and consistency. Polish Lead cannot reverse approved creative decisions (e.g., an intentionally asymmetric layout, an unconventional color choice). If Polish Lead flags a creative choice as inconsistent, CDO reviews against the Creative Brief before accepting or rejecting.
+12. **Slop Auditor vs Creative Brief** — CDO can override specific Slop Auditor flags if the flagged pattern is intentional and documented in the Creative Brief. Example: if the brief says "use gradient text for the hero heading," the Slop Auditor's gradient-text flag is overridden. The override must be explicit — "the brief says X, so this flag is dismissed."
 
 **Final Output Format:**
 
