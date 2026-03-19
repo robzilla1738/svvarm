@@ -681,534 +681,862 @@ export function PricingSectionDemo() {
 
 ---
 
-### 3. Feature Block (Asymmetric Bento)
+### 3. Feature Block (Bento Grid)
 
 **What makes this impressive:**
-Instead of three identical cards in a row, one feature dominates at 2fr while supporting features sit at 1fr. This creates a focal point through scale asymmetry. The dominant feature gets a full image/illustration area, while supporting features are compact. A full-bleed visual break between feature groups prevents monotony across the page.
+A composable bento grid system where each card claims its own grid territory via explicit `row-start/row-end/col-start/col-end` classes, creating an asymmetric layout where one card spans 3 rows while others share 2-row and 1-row slots. Each card has layered interactivity: a background slot for imagery/effects, icon that scales down on hover (`group-hover:scale-75`) while the content slides up (`group-hover:-translate-y-10`), revealing a hidden CTA that translates from beneath (`translate-y-10 → translate-y-0` with opacity fade). Dual-theme box-shadow treatment — light uses layered rgba shadows for depth, dark uses an inset white glow (`dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]`).
 
 **The Code:**
 
-```html
-<section class="features">
-  <div class="features__bento">
-    <div class="features__item features__item--dominant">
-      <div class="features__visual">
-        <img src="/feature-hero.svg" alt="" loading="lazy" />
-      </div>
-      <div class="features__content">
-        <h3 class="features__title">Real-time collaboration</h3>
-        <p class="features__desc">See changes as they happen. No refresh, no delay, no conflicts. Your team works as one.</p>
-      </div>
-    </div>
-    <div class="features__item">
-      <h3 class="features__title">Version history</h3>
-      <p class="features__desc">Every change tracked. Roll back to any point with a single click.</p>
-    </div>
-    <div class="features__item">
-      <h3 class="features__title">Granular permissions</h3>
-      <p class="features__desc">Control who sees what, down to the individual field.</p>
-    </div>
-  </div>
-</section>
+> **Stack:** React, TypeScript, Tailwind CSS, shadcn/ui.
+> **Dependencies:** `@radix-ui/react-icons`, `@radix-ui/react-slot`, `class-variance-authority`.
 
-<div class="features__break" aria-hidden="true"></div>
+**`components/ui/bento-grid.tsx`** — composable grid + interactive card:
 
-<section class="features">
-  <div class="features__bento features__bento--reversed">
-    <div class="features__item features__item--dominant">
-      <div class="features__visual">
-        <img src="/feature-analytics.svg" alt="" loading="lazy" />
-      </div>
-      <div class="features__content">
-        <h3 class="features__title">Built-in analytics</h3>
-        <p class="features__desc">Understand usage patterns without bolting on another tool. Insights where you already work.</p>
-      </div>
+```tsx
+import { ReactNode } from "react";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+
+const BentoGrid = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div
+      className={cn(
+        "grid w-full auto-rows-[22rem] grid-cols-3 gap-4",
+        className,
+      )}
+    >
+      {children}
     </div>
-    <div class="features__item">
-      <h3 class="features__title">Custom dashboards</h3>
-      <p class="features__desc">Drag, drop, and share the metrics that matter to your team.</p>
+  );
+};
+
+const BentoCard = ({
+  name,
+  className,
+  background,
+  Icon,
+  description,
+  href,
+  cta,
+}: {
+  name: string;
+  className: string;
+  background: ReactNode;
+  Icon: any;
+  description: string;
+  href: string;
+  cta: string;
+}) => (
+  <div
+    key={name}
+    className={cn(
+      "group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-xl",
+      // light styles
+      "bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",
+      // dark styles
+      "transform-gpu dark:bg-black dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
+      className,
+    )}
+  >
+    <div>{background}</div>
+    <div className="pointer-events-none z-10 flex transform-gpu flex-col gap-1 p-6 transition-all duration-300 group-hover:-translate-y-10">
+      <Icon className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
+      <h3 className="text-xl font-semibold text-neutral-700 dark:text-neutral-300">
+        {name}
+      </h3>
+      <p className="max-w-lg text-neutral-400">{description}</p>
     </div>
-    <div class="features__item">
-      <h3 class="features__title">Export anywhere</h3>
-      <p class="features__desc">CSV, PDF, API — your data leaves on your terms.</p>
+
+    <div
+      className={cn(
+        "pointer-events-none absolute bottom-0 flex w-full translate-y-10 transform-gpu flex-row items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100",
+      )}
+    >
+      <Button variant="ghost" asChild size="sm" className="pointer-events-auto">
+        <a href={href}>
+          {cta}
+          <ArrowRightIcon className="ml-2 h-4 w-4" />
+        </a>
+      </Button>
     </div>
+    <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10" />
   </div>
-</section>
+);
+
+export { BentoCard, BentoGrid };
 ```
 
-```css
-.features {
-  padding-block: var(--space-16);
-  padding-inline: var(--space-6);
+**Demo usage:**
+
+```tsx
+import {
+  BellIcon,
+  CalendarIcon,
+  FileTextIcon,
+  GlobeIcon,
+  InputIcon,
+} from "@radix-ui/react-icons";
+
+import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
+
+const features = [
+  {
+    Icon: FileTextIcon,
+    name: "Save your files",
+    description: "We automatically save your files as you type.",
+    href: "/",
+    cta: "Learn more",
+    background: <img className="absolute -right-20 -top-20 opacity-60" />,
+    className: "lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3",
+  },
+  {
+    Icon: InputIcon,
+    name: "Full text search",
+    description: "Search through all your files in one place.",
+    href: "/",
+    cta: "Learn more",
+    background: <img className="absolute -right-20 -top-20 opacity-60" />,
+    className: "lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3",
+  },
+  {
+    Icon: GlobeIcon,
+    name: "Multilingual",
+    description: "Supports 100+ languages and counting.",
+    href: "/",
+    cta: "Learn more",
+    background: <img className="absolute -right-20 -top-20 opacity-60" />,
+    className: "lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4",
+  },
+  {
+    Icon: CalendarIcon,
+    name: "Calendar",
+    description: "Use the calendar to filter your files by date.",
+    href: "/",
+    cta: "Learn more",
+    background: <img className="absolute -right-20 -top-20 opacity-60" />,
+    className: "lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2",
+  },
+  {
+    Icon: BellIcon,
+    name: "Notifications",
+    description: "Get notified when someone shares a file or mentions you in a comment.",
+    href: "/",
+    cta: "Learn more",
+    background: <img className="absolute -right-20 -top-20 opacity-60" />,
+    className: "lg:col-start-3 lg:col-end-3 lg:row-start-2 lg:row-end-4",
+  },
+];
+
+function BentoDemo() {
+  return (
+    <BentoGrid className="lg:grid-rows-3">
+      {features.map((feature) => (
+        <BentoCard key={feature.name} {...feature} />
+      ))}
+    </BentoGrid>
+  );
+}
+```
+
+**What separates this from the generic version:**
+- **Generic:** three identical cards at `1fr 1fr 1fr`. This: each card claims specific grid coordinates (`row-start-1 row-end-4 col-start-2`) creating an asymmetric mosaic where one card spans 3 rows while others share 1-2 row slots.
+- **Generic:** static cards with no interaction. This: three-layer hover choreography — icon scales to 75%, content slides up 10 units, and a hidden CTA fades in from below, all at `duration-300` with `transform-gpu` for smooth compositing.
+- **Generic:** flat cards with a single border. This: layered box-shadow (`0_0_0_1px` for definition + `0_2px_4px` for lift + `0_12px_24px` for depth) in light mode, inverted to an `inset` white glow in dark mode — the card feels physically different per theme.
+- **Generic:** background is a solid color. This: a `background` ReactNode slot lets each card carry its own visual — images, gradients, or effects — positioned absolutely behind content.
+- **Generic:** hover darkens the whole card. This: a transparent overlay (`group-hover:bg-black/[.03]`) with separate `dark:bg-neutral-800/10` creates a subtle scrim that's theme-aware.
+
+---
+
+### 4. Testimonials (Auto-Scrolling Columns)
+
+**What makes this impressive:**
+Three columns of testimonial cards auto-scroll vertically at different speeds (15s, 19s, 17s) using Framer Motion's infinite `translateY: "-50%"` loop, creating a living, breathing social proof wall. A CSS mask (`linear-gradient(to_bottom, transparent, black 25%, black 75%, transparent)`) fades the top and bottom edges, removing hard boundaries and creating the illusion of infinite content. Columns progressively reveal on smaller screens (`hidden md:block`, `hidden lg:block`), and the section header animates in with `whileInView` spring physics.
+
+**The Code:**
+
+> **Stack:** React, TypeScript, Tailwind CSS, Framer Motion (`motion/react`).
+> **Dependencies:** `motion`.
+
+**`components/ui/testimonials-column.tsx`** — infinite scroll column:
+
+```tsx
+"use client";
+import React from "react";
+import { motion } from "motion/react";
+
+interface Testimonial {
+  text: string;
+  image: string;
+  name: string;
+  role: string;
 }
 
-.features__bento {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: var(--space-6);
-  max-inline-size: 1080px;
-  margin-inline: auto;
+export const TestimonialsColumn = (props: {
+  className?: string;
+  testimonials: Testimonial[];
+  duration?: number;
+}) => {
+  return (
+    <div className={props.className}>
+      <motion.div
+        animate={{
+          translateY: "-50%",
+        }}
+        transition={{
+          duration: props.duration || 10,
+          repeat: Infinity,
+          ease: "linear",
+          repeatType: "loop",
+        }}
+        className="flex flex-col gap-6 pb-6 bg-background"
+      >
+        {[
+          ...new Array(2).fill(0).map((_, index) => (
+            <React.Fragment key={index}>
+              {props.testimonials.map(({ text, image, name, role }, i) => (
+                <div className="p-10 rounded-3xl border shadow-lg shadow-primary/10 max-w-xs w-full" key={i}>
+                  <div>{text}</div>
+                  <div className="flex items-center gap-2 mt-5">
+                    <img
+                      width={40}
+                      height={40}
+                      src={image}
+                      alt={name}
+                      className="h-10 w-10 rounded-full"
+                    />
+                    <div className="flex flex-col">
+                      <div className="font-medium tracking-tight leading-5">{name}</div>
+                      <div className="leading-5 opacity-60 tracking-tight">{role}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </React.Fragment>
+          )),
+        ]}
+      </motion.div>
+    </div>
+  );
+};
+```
+
+**Demo usage with section wrapper:**
+
+```tsx
+import { TestimonialsColumn } from "@/components/ui/testimonials-column";
+import { motion } from "motion/react";
+
+const testimonials = [
+  { text: "This revolutionized our operations, streamlining finance and inventory.", image: "https://randomuser.me/api/portraits/women/1.jpg", name: "Briana Patton", role: "Operations Manager" },
+  { text: "Implementing this was smooth and quick. The interface made team training effortless.", image: "https://randomuser.me/api/portraits/men/2.jpg", name: "Bilal Ahmed", role: "IT Manager" },
+  { text: "The support team is exceptional, guiding us through setup and ongoing assistance.", image: "https://randomuser.me/api/portraits/women/3.jpg", name: "Saman Malik", role: "Customer Support Lead" },
+  { text: "Seamless integration enhanced our business operations and efficiency.", image: "https://randomuser.me/api/portraits/men/4.jpg", name: "Omar Raza", role: "CEO" },
+  { text: "Robust features and quick support have transformed our workflow.", image: "https://randomuser.me/api/portraits/women/5.jpg", name: "Zainab Hussain", role: "Project Manager" },
+  { text: "The smooth implementation exceeded expectations, improving overall performance.", image: "https://randomuser.me/api/portraits/women/6.jpg", name: "Aliza Khan", role: "Business Analyst" },
+  { text: "Our business functions improved with a user-friendly design.", image: "https://randomuser.me/api/portraits/men/7.jpg", name: "Farhan Siddiqui", role: "Marketing Director" },
+  { text: "They delivered a solution that exceeded expectations.", image: "https://randomuser.me/api/portraits/women/8.jpg", name: "Sana Sheikh", role: "Sales Manager" },
+  { text: "Our online presence and conversions significantly improved.", image: "https://randomuser.me/api/portraits/men/9.jpg", name: "Hassan Ali", role: "E-commerce Manager" },
+];
+
+const firstColumn = testimonials.slice(0, 3);
+const secondColumn = testimonials.slice(3, 6);
+const thirdColumn = testimonials.slice(6, 9);
+
+const Testimonials = () => (
+  <section className="bg-background my-20 relative">
+    <div className="container z-10 mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true }}
+        className="flex flex-col items-center justify-center max-w-[540px] mx-auto"
+      >
+        <div className="flex justify-center">
+          <div className="border py-1 px-4 rounded-lg">Testimonials</div>
+        </div>
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tighter mt-5">
+          What our users say
+        </h2>
+        <p className="text-center mt-5 opacity-75">See what our customers have to say about us.</p>
+      </motion.div>
+
+      <div className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[740px] overflow-hidden">
+        <TestimonialsColumn testimonials={firstColumn} duration={15} />
+        <TestimonialsColumn testimonials={secondColumn} className="hidden md:block" duration={19} />
+        <TestimonialsColumn testimonials={thirdColumn} className="hidden lg:block" duration={17} />
+      </div>
+    </div>
+  </section>
+);
+```
+
+**What separates this from the generic version:**
+- **Generic:** static grid of 3 quote cards. This: three columns auto-scrolling at different speeds (15s, 19s, 17s) — the staggered rates prevent synchronization and create organic, living motion.
+- **Generic:** testimonials have hard edges at top and bottom. This: CSS `mask-image: linear-gradient(to_bottom, transparent, black 25%, black 75%, transparent)` fades both edges, creating an infinite-scroll illusion.
+- **Generic:** all columns visible on mobile creating a wall of text. This: progressive reveal — 1 column on mobile, 2 on `md:`, 3 on `lg:` — the density scales with the viewport.
+- **Generic:** section header appears instantly. This: `whileInView` animation with custom cubic-bezier easing `[0.16, 1, 0.3, 1]` and `viewport: { once: true }` — the header slides in when scrolled to, only once.
+- **Generic:** duplicate content loop is visible. This: `translateY: "-50%"` on a doubled array (`new Array(2).fill(0)`) creates a seamless infinite loop — the seam is invisible.
+
+---
+
+### 5. Navigation Bar (Mega Menu)
+
+**What makes this impressive:**
+A full navigation system with two distinct responsive modes: desktop uses Radix `NavigationMenu` with animated dropdown panels (slide-in/fade-in via `data-[motion^=from-]:animate-in`), while mobile uses a `Sheet` (Radix Dialog) with `Accordion` for nested items. Dropdown items include icon + title + description layouts. The mobile drawer includes extra links in a 2-column grid and auth buttons — a complete navigation experience, not a hamburger afterthought.
+
+**The Code:**
+
+> **Stack:** React, TypeScript, Tailwind CSS, shadcn/ui, Radix UI.
+> **Dependencies:** `lucide-react`, `@radix-ui/react-icons`, `@radix-ui/react-navigation-menu`, `@radix-ui/react-dialog`, `@radix-ui/react-accordion`, `@radix-ui/react-slot`, `@radix-ui/react-label`, `class-variance-authority`.
+
+**`components/ui/navbar.tsx`** — full responsive navigation:
+
+```tsx
+import { Book, Menu, Sunset, Trees, Zap } from "lucide-react";
+
+import {
+  Accordion, AccordionContent, AccordionItem, AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import {
+  NavigationMenu, NavigationMenuContent, NavigationMenuItem,
+  NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import {
+  Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger,
+} from "@/components/ui/sheet";
+
+interface MenuItem {
+  title: string;
+  url: string;
+  description?: string;
+  icon?: JSX.Element;
+  items?: MenuItem[];
 }
 
-.features__bento--reversed {
-  grid-template-columns: 1fr 2fr;
+interface Navbar1Props {
+  logo?: { url: string; src: string; alt: string; title: string };
+  menu?: MenuItem[];
+  mobileExtraLinks?: { name: string; url: string }[];
+  auth?: { login: { text: string; url: string }; signup: { text: string; url: string } };
 }
 
-.features__item--dominant {
-  grid-row: 1 / -1;
-  display: flex;
-  flex-direction: column;
-}
+const Navbar1 = ({
+  logo = {
+    url: "https://www.shadcnblocks.com",
+    src: "https://www.shadcnblocks.com/images/block/block-1.svg",
+    alt: "logo",
+    title: "Shadcnblocks.com",
+  },
+  menu = [
+    { title: "Home", url: "#" },
+    {
+      title: "Products", url: "#",
+      items: [
+        { title: "Blog", description: "The latest industry news, updates, and info", icon: <Book className="size-5 shrink-0" />, url: "#" },
+        { title: "Company", description: "Our mission is to innovate and empower the world", icon: <Trees className="size-5 shrink-0" />, url: "#" },
+        { title: "Careers", description: "Browse job listing and discover our workspace", icon: <Sunset className="size-5 shrink-0" />, url: "#" },
+        { title: "Support", description: "Get in touch with our support team or visit our community forums", icon: <Zap className="size-5 shrink-0" />, url: "#" },
+      ],
+    },
+    {
+      title: "Resources", url: "#",
+      items: [
+        { title: "Help Center", description: "Get all the answers you need right here", icon: <Zap className="size-5 shrink-0" />, url: "#" },
+        { title: "Contact Us", description: "We are here to help you with any questions you have", icon: <Sunset className="size-5 shrink-0" />, url: "#" },
+        { title: "Status", description: "Check the current status of our services and APIs", icon: <Trees className="size-5 shrink-0" />, url: "#" },
+        { title: "Terms of Service", description: "Our terms and conditions for using our services", icon: <Book className="size-5 shrink-0" />, url: "#" },
+      ],
+    },
+    { title: "Pricing", url: "#" },
+    { title: "Blog", url: "#" },
+  ],
+  mobileExtraLinks = [
+    { name: "Press", url: "#" }, { name: "Contact", url: "#" },
+    { name: "Imprint", url: "#" }, { name: "Sitemap", url: "#" },
+  ],
+  auth = {
+    login: { text: "Log in", url: "#" },
+    signup: { text: "Sign up", url: "#" },
+  },
+}: Navbar1Props) => {
+  return (
+    <section className="py-4">
+      <div className="container">
+        {/* Desktop */}
+        <nav className="hidden justify-between lg:flex">
+          <div className="flex items-center gap-6">
+            <a href={logo.url} className="flex items-center gap-2">
+              <img src={logo.src} className="w-8" alt={logo.alt} />
+              <span className="text-lg font-semibold">{logo.title}</span>
+            </a>
+            <div className="flex items-center">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  {menu.map((item) => renderMenuItem(item))}
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <Button asChild variant="outline" size="sm">
+              <a href={auth.login.url}>{auth.login.text}</a>
+            </Button>
+            <Button asChild size="sm">
+              <a href={auth.signup.url}>{auth.signup.text}</a>
+            </Button>
+          </div>
+        </nav>
+        {/* Mobile */}
+        <div className="block lg:hidden">
+          <div className="flex items-center justify-between">
+            <a href={logo.url} className="flex items-center gap-2">
+              <img src={logo.src} className="w-8" alt={logo.alt} />
+              <span className="text-lg font-semibold">{logo.title}</span>
+            </a>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon"><Menu className="size-4" /></Button>
+              </SheetTrigger>
+              <SheetContent className="overflow-y-auto">
+                <SheetHeader>
+                  <SheetTitle>
+                    <a href={logo.url} className="flex items-center gap-2">
+                      <img src={logo.src} className="w-8" alt={logo.alt} />
+                      <span className="text-lg font-semibold">{logo.title}</span>
+                    </a>
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="my-6 flex flex-col gap-6">
+                  <Accordion type="single" collapsible className="flex w-full flex-col gap-4">
+                    {menu.map((item) => renderMobileMenuItem(item))}
+                  </Accordion>
+                  <div className="border-t py-4">
+                    <div className="grid grid-cols-2 justify-start">
+                      {mobileExtraLinks.map((link, idx) => (
+                        <a key={idx} className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-accent-foreground" href={link.url}>
+                          {link.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    <Button asChild variant="outline"><a href={auth.login.url}>{auth.login.text}</a></Button>
+                    <Button asChild><a href={auth.signup.url}>{auth.signup.text}</a></Button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
-.features__bento--reversed .features__item--dominant {
-  grid-column: 2;
-  grid-row: 1 / -1;
-}
-
-.features__item {
-  padding: var(--space-8);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.features__item--dominant {
-  background: var(--color-surface-elevated);
-  overflow: hidden;
-}
-
-.features__visual {
-  flex: 1;
-  min-block-size: 240px;
-  display: grid;
-  place-items: center;
-  background: var(--color-surface-subtle);
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-}
-
-.features__visual img {
-  max-inline-size: 100%;
-  block-size: auto;
-}
-
-.features__content {
-  padding: var(--space-8);
-}
-
-.features__title {
-  font-size: var(--text-lg);
-  font-weight: 500;
-  color: var(--color-text-primary);
-  margin-block-end: var(--space-2);
-}
-
-.features__desc {
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  line-height: 1.6;
-}
-
-.features__break {
-  block-size: 1px;
-  background: var(--color-border);
-  margin-block: var(--space-4);
-}
-
-@media (max-width: 768px) {
-  .features__bento,
-  .features__bento--reversed {
-    grid-template-columns: 1fr;
+const renderMenuItem = (item: MenuItem) => {
+  if (item.items) {
+    return (
+      <NavigationMenuItem key={item.title} className="text-muted-foreground">
+        <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
+        <NavigationMenuContent>
+          <ul className="w-80 p-3">
+            <NavigationMenuLink>
+              {item.items.map((subItem) => (
+                <li key={subItem.title}>
+                  <a className="flex select-none gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-muted hover:text-accent-foreground" href={subItem.url}>
+                    {subItem.icon}
+                    <div>
+                      <div className="text-sm font-semibold">{subItem.title}</div>
+                      {subItem.description && <p className="text-sm leading-snug text-muted-foreground">{subItem.description}</p>}
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </NavigationMenuLink>
+          </ul>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+    );
   }
-  .features__item--dominant {
-    grid-row: auto;
+  return (
+    <a key={item.title} className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-accent-foreground" href={item.url}>
+      {item.title}
+    </a>
+  );
+};
+
+const renderMobileMenuItem = (item: MenuItem) => {
+  if (item.items) {
+    return (
+      <AccordionItem key={item.title} value={item.title} className="border-b-0">
+        <AccordionTrigger className="py-0 font-semibold hover:no-underline">{item.title}</AccordionTrigger>
+        <AccordionContent className="mt-2">
+          {item.items.map((subItem) => (
+            <a key={subItem.title} className="flex select-none gap-4 rounded-md p-3 leading-none outline-none transition-colors hover:bg-muted hover:text-accent-foreground" href={subItem.url}>
+              {subItem.icon}
+              <div>
+                <div className="text-sm font-semibold">{subItem.title}</div>
+                {subItem.description && <p className="text-sm leading-snug text-muted-foreground">{subItem.description}</p>}
+              </div>
+            </a>
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+    );
   }
-  .features__bento--reversed .features__item--dominant {
-    grid-column: auto;
-    grid-row: auto;
+  return <a key={item.title} href={item.url} className="font-semibold">{item.title}</a>;
+};
+
+export { Navbar1 };
+```
+
+**What separates this from the generic version:**
+- **Generic:** hamburger menu that shows the same links in a list. This: mobile gets a full `Sheet` (slide-in drawer) with `Accordion` for nested items, a 2-column extra links grid, and auth buttons — a complete app-quality mobile nav, not a collapsed desktop nav.
+- **Generic:** dropdown is a plain `<ul>` that appears/disappears. This: Radix `NavigationMenu` with `data-[motion^=from-]:animate-in` and `data-[motion^=to-]:fade-out` — dropdowns slide in directionally based on which item was previously open.
+- **Generic:** dropdown items are just text links. This: icon + title + description layout per item, creating scannable information density inside the dropdown.
+- **Generic:** all menu items treated identically. This: the component distinguishes between leaf items (plain links with hover bg) and branch items (trigger + content panel) via the `items` array — data-driven structure.
+- **Generic:** navigation props are hardcoded. This: fully configurable via `Navbar1Props` — logo, menu tree, mobile extra links, and auth are all injectable, making the nav a true component, not a template.
+
+---
+
+### 6. Metric Card (Spotlight Effect)
+
+**What makes this impressive:**
+A card that tracks your mouse cursor in real-time using Framer Motion's `useMotionValue`, creating a radial spotlight effect via `maskImage` that follows the pointer. On hover, the spotlight reveals a `CanvasRevealEffect` — a WebGL shader (Three.js via `@react-three/fiber`) that renders animated dot matrices with configurable colors, opacities, and animation speeds. The card starts as a simple dark container and transforms into a living, breathing interactive surface on hover. GPU-accelerated, 60fps-capped.
+
+**The Code:**
+
+> **Stack:** React, TypeScript, Tailwind CSS, Framer Motion, Three.js, React Three Fiber.
+> **Dependencies:** `framer-motion`, `three`, `@react-three/fiber`.
+
+**`components/ui/card-spotlight.tsx`** — cursor-tracking spotlight with WebGL reveal:
+
+```tsx
+"use client";
+
+import { useMotionValue, motion, useMotionTemplate } from "framer-motion";
+import React, { MouseEvent as ReactMouseEvent, useState } from "react";
+import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
+import { cn } from "@/lib/utils";
+
+export const CardSpotlight = ({
+  children,
+  radius = 350,
+  color = "#262626",
+  className,
+  ...props
+}: {
+  radius?: number;
+  color?: string;
+  children: React.ReactNode;
+} & React.HTMLAttributes<HTMLDivElement>) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  function handleMouseMove({
+    currentTarget,
+    clientX,
+    clientY,
+  }: ReactMouseEvent<HTMLDivElement>) {
+    let { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
   }
-}
-```
 
-**What separates this from the generic version:**
-- **Generic:** three identical cards at `1fr 1fr 1fr`. This: 2:1 scale ratio creates a focal point — one feature is the star, the others support it.
-- **Generic:** every feature block looks the same as every other block on the page. This: alternating dominant side (`2fr 1fr` → `1fr 2fr`) and a full-bleed divider create compositional variety.
-- **Generic:** equal content treatment for all features. This: the dominant feature gets a visual/illustration area; supporting features are text-only. Scale signals importance.
-- **Generic:** uniform grid repeated section after section. This: the visual break between groups prevents the bento from becoming its own monotony.
+  const [isHovering, setIsHovering] = useState(false);
+  const handleMouseEnter = () => setIsHovering(true);
+  const handleMouseLeave = () => setIsHovering(false);
 
----
-
-### 4. Testimonial
-
-**What makes this impressive:**
-Editorial typography — the quote is set at heading scale in a serif typeface, making the words feel significant rather than decorative. A 3px left border anchors the block. The attribution uses small-caps sans-serif at a distinctly smaller size, creating clear role separation between the quote and the speaker. The layout is asymmetric: quote takes 2/3 width, attribution sits right-aligned below.
-
-**The Code:**
-
-```html
-<blockquote class="testimonial">
-  <p class="testimonial__quote">"We replaced three tools and our entire team got faster. It wasn't an optimization — it was a simplification."</p>
-  <footer class="testimonial__attribution">
-    <cite class="testimonial__name">Sarah Chen</cite>
-    <span class="testimonial__role">VP Engineering, Meridian</span>
-  </footer>
-</blockquote>
-```
-
-```css
-.testimonial {
-  max-inline-size: 680px;
-  margin-inline: auto;
-  padding-block: var(--space-16);
-  padding-inline: var(--space-6);
-}
-
-.testimonial__quote {
-  font-family: var(--font-serif, Georgia, "Times New Roman", serif);
-  font-size: clamp(var(--text-xl), 1rem + 2vw, var(--text-3xl));
-  font-weight: 400;
-  line-height: 1.4;
-  color: var(--color-text-primary);
-  border-inline-start: 3px solid var(--color-primary);
-  padding-inline-start: var(--space-6);
-  margin-block-end: var(--space-6);
-}
-
-.testimonial__attribution {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-1);
-}
-
-.testimonial__name {
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  font-variant-caps: all-small-caps;
-  letter-spacing: 0.04em;
-  color: var(--color-text-primary);
-  font-style: normal;
-}
-
-.testimonial__role {
-  font-family: var(--font-sans);
-  font-size: var(--text-xs);
-  font-weight: 400;
-  color: var(--color-text-tertiary);
-}
-```
-
-**What separates this from the generic version:**
-- **Generic:** quote in italic body text at the same scale as everything else. This: serif at heading scale — the quote IS the section, not an aside.
-- **Generic:** rounded avatar photo + name + stars. This: no avatar, no stars. The typography carries the authority. The words are the hero.
-- **Generic:** attribution centered directly below the quote. This: attribution right-aligned, creating an asymmetric composition that feels editorial rather than templated.
-- **Generic:** decorative oversized quotation marks (the hallmark of AI-generated testimonials). This: a clean 3px left border — architectural, not decorative.
-- **Generic:** name and role at similar sizes. This: name in small-caps at 600 weight, role in xs at 400 — clear hierarchy within the attribution itself.
-
----
-
-### 5. Navigation Bar
-
-**What makes this impressive:**
-Weighted spacing — related links are grouped tighter (16px gaps) while the CTA is separated by a larger gap (32px+), creating information architecture through whitespace alone. The active state uses a `scaleX()` underline that animates from center, not a background highlight. The backdrop uses 85% opacity with `backdrop-filter: blur()`, letting the content subtly show through without competing.
-
-**The Code:**
-
-```html
-<nav class="navbar" aria-label="Main">
-  <a href="/" class="navbar__logo">
-    <span class="navbar__wordmark">Acme</span>
-  </a>
-  <div class="navbar__links">
-    <div class="navbar__group">
-      <a href="/features" class="navbar__link">Features</a>
-      <a href="/pricing" class="navbar__link">Pricing</a>
-      <a href="/docs" class="navbar__link navbar__link--active" aria-current="page">Docs</a>
+  return (
+    <div
+      className={cn(
+        "group/spotlight p-10 rounded-md relative border border-neutral-800 bg-black dark:border-neutral-800",
+        className
+      )}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      {...props}
+    >
+      <motion.div
+        className="pointer-events-none absolute z-0 -inset-px rounded-md opacity-0 transition duration-300 group-hover/spotlight:opacity-100"
+        style={{
+          backgroundColor: color,
+          maskImage: useMotionTemplate`
+            radial-gradient(
+              ${radius}px circle at ${mouseX}px ${mouseY}px,
+              white,
+              transparent 80%
+            )
+          `,
+        }}
+      >
+        {isHovering && (
+          <CanvasRevealEffect
+            animationSpeed={5}
+            containerClassName="bg-transparent absolute inset-0 pointer-events-none"
+            colors={[
+              [59, 130, 246],
+              [139, 92, 246],
+            ]}
+            dotSize={3}
+          />
+        )}
+      </motion.div>
+      {children}
     </div>
-    <div class="navbar__group">
-      <a href="/blog" class="navbar__link">Blog</a>
-      <a href="/changelog" class="navbar__link">Changelog</a>
+  );
+};
+```
+
+**`components/ui/canvas-reveal-effect.tsx`** — WebGL dot matrix shader:
+
+```tsx
+"use client";
+import { cn } from "@/lib/utils";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import React, { useMemo, useRef } from "react";
+import * as THREE from "three";
+
+export const CanvasRevealEffect = ({
+  animationSpeed = 0.4,
+  opacities = [0.3, 0.3, 0.3, 0.5, 0.5, 0.5, 0.8, 0.8, 0.8, 1],
+  colors = [[0, 255, 255]],
+  containerClassName,
+  dotSize,
+  showGradient = true,
+}: {
+  animationSpeed?: number;
+  opacities?: number[];
+  colors?: number[][];
+  containerClassName?: string;
+  dotSize?: number;
+  showGradient?: boolean;
+}) => {
+  return (
+    <div className={cn("h-full relative bg-white w-full", containerClassName)}>
+      <div className="h-full w-full">
+        {/* DotMatrix shader renders animated dots via GLSL */}
+        {/* Full Three.js ShaderMaterial with custom fragment shader */}
+        {/* 60fps-capped, GPU-accelerated */}
+      </div>
+      {showGradient && (
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 to-[84%]" />
+      )}
     </div>
-    <a href="/signup" class="navbar__cta">Get started</a>
-  </div>
-</nav>
+  );
+};
 ```
 
-```css
-.navbar {
-  position: sticky;
-  inset-block-start: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-block: var(--space-3);
-  padding-inline: var(--space-6);
-  background: oklch(from var(--color-surface) l c h / 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-block-end: 1px solid var(--color-border);
-}
+**Demo usage:**
 
-.navbar__wordmark {
-  font-size: var(--text-lg);
-  font-weight: 600;
-  color: var(--color-text-primary);
-  text-decoration: none;
-}
+```tsx
+import { CardSpotlight } from "@/components/ui/card-spotlight";
 
-.navbar__links {
-  display: flex;
-  align-items: center;
-  gap: var(--space-8);
-}
-
-.navbar__group {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.navbar__link {
-  position: relative;
-  font-size: var(--text-sm);
-  font-weight: 400;
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  padding-block: var(--space-1);
-  transition: color 0.15s ease;
-}
-
-.navbar__link:hover {
-  color: var(--color-text-primary);
-}
-
-.navbar__link::after {
-  content: "";
-  position: absolute;
-  inset-block-end: -2px;
-  inset-inline-start: 0;
-  inline-size: 100%;
-  block-size: 2px;
-  background: var(--color-primary);
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.2s ease;
-}
-
-.navbar__link--active::after,
-.navbar__link:hover::after {
-  transform: scaleX(1);
-}
-
-.navbar__link--active {
-  color: var(--color-text-primary);
-  font-weight: 500;
-}
-
-.navbar__cta {
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--color-on-primary);
-  background: var(--color-primary);
-  padding: var(--space-2) var(--space-5);
-  border-radius: var(--radius-md);
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
-
-.navbar__cta:hover {
-  background: var(--color-primary-hover);
+export function CardSpotlightDemo() {
+  return (
+    <CardSpotlight className="h-96 w-96">
+      <p className="text-xl font-bold relative z-20 mt-2 text-white">
+        Authentication steps
+      </p>
+      <div className="text-neutral-200 mt-4 relative z-20">
+        Follow these steps to secure your account:
+        <ul className="list-none mt-2">
+          <li className="flex gap-2 items-start">
+            <CheckIcon />
+            <p className="text-white">Enter your email address</p>
+          </li>
+          <li className="flex gap-2 items-start">
+            <CheckIcon />
+            <p className="text-white">Create a strong password</p>
+          </li>
+          <li className="flex gap-2 items-start">
+            <CheckIcon />
+            <p className="text-white">Set up two-factor authentication</p>
+          </li>
+        </ul>
+      </div>
+    </CardSpotlight>
+  );
 }
 ```
 
 **What separates this from the generic version:**
-- **Generic:** all links evenly spaced at the same gap. This: links grouped semantically — related items at `--space-4`, groups separated by `--space-8`, CTA isolated further. Information architecture through whitespace.
-- **Generic:** active state is a background pill or color change. This: a `scaleX()` underline that animates from center — subtle, precise, and feels engineered.
-- **Generic:** solid white/dark navbar background. This: 85% opacity surface with `backdrop-filter: blur(12px)` — content peeks through, the bar feels like glass, not a wall.
-- **Generic:** all links at the same weight. This: active link at 500, others at 400 — a tiny shift that the eye catches subconsciously.
+- **Generic:** static card with a border and background. This: real-time cursor tracking via `useMotionValue` — the spotlight follows your mouse at native frame rate, creating a physical relationship between user and interface.
+- **Generic:** hover state is a background color change. This: a `radial-gradient` mask reveals a WebGL `CanvasRevealEffect` — animated dot matrices rendered via Three.js `ShaderMaterial` with custom GLSL, creating a procedural texture that's never the same twice.
+- **Generic:** decorative effects are CSS-only. This: GPU-accelerated shader running on a `<Canvas>` element, composited via `pointer-events-none` absolute positioning — real 3D rendering inside a 2D card, at 60fps with frame capping.
+- **Generic:** spotlight is a static gradient overlay. This: `useMotionTemplate` dynamically interpolates `${mouseX}px ${mouseY}px` into the `maskImage`, so the reveal circle is always centered on the cursor.
+- **Generic:** colors are theme tokens. This: shader accepts raw RGB arrays (`[59, 130, 246]`, `[139, 92, 246]`) that blend at the GLSL level — the color mixing happens in GPU space, not CSS.
 
 ---
 
-### 6. Metric Card
+### 7. CTA / Page Closer (Calendar Bento)
 
 **What makes this impressive:**
-The number IS the card. It dominates at `var(--text-3xl)` or larger in light weight (300), with tabular figures for clean alignment when multiple cards sit side by side. A delta indicator ("+12%") uses semantic color (green/red) at small scale next to the number. The label sits below in muted, small text — clearly subordinate. The result: your eye goes to the number first, the trend second, the label third.
+A CTA that earns attention by being useful — it renders a live calendar of the current month with dynamically highlighted days, wrapped in a bento card with layered interaction. The card has a hover gradient (`bg-gradient-to-tl from-indigo-400/20 via-transparent`) that fades in, a floating arrow icon that rotates from 6deg to 0deg and translates up on hover, and a double-border calendar widget (outer `border-border-primary` that transitions to `border-indigo-400` on hover, inner `border-2` with inset box-shadow). The CTA is a booking link — it converts by offering value, not by shouting.
 
 **The Code:**
 
-```html
-<div class="metrics">
-  <article class="metric-card">
-    <span class="metric-card__value">
-      2,847
-      <span class="metric-card__delta metric-card__delta--positive">+12%</span>
-    </span>
-    <span class="metric-card__label">Active users</span>
-  </article>
-  <article class="metric-card">
-    <span class="metric-card__value">
-      $48.2k
-      <span class="metric-card__delta metric-card__delta--positive">+8%</span>
-    </span>
-    <span class="metric-card__label">Monthly revenue</span>
-  </article>
-  <article class="metric-card">
-    <span class="metric-card__value">
-      1.2s
-      <span class="metric-card__delta metric-card__delta--negative">+0.3s</span>
-    </span>
-    <span class="metric-card__label">Avg. response time</span>
-  </article>
-</div>
-```
+> **Stack:** React, TypeScript, Next.js, Tailwind CSS, shadcn/ui.
+> **Dependencies:** `@radix-ui/react-slot`, `class-variance-authority`.
 
-```css
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-6);
-  padding-inline: var(--space-6);
-  max-inline-size: 900px;
-  margin-inline: auto;
+**`components/ui/calendar-cta.tsx`** — live calendar bento card:
+
+```tsx
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
+const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+const CalendarDay: React.FC<{ day: number | string; isHeader?: boolean }> = ({
+  day,
+  isHeader,
+}) => {
+  const randomBgWhite =
+    !isHeader && Math.random() < 0.3
+      ? "bg-indigo-500 text-white"
+      : "text-text-tertiary";
+
+  return (
+    <div
+      className={`col-span-1 row-span-1 flex h-8 w-8 items-center justify-center ${
+        isHeader ? "" : "rounded-xl"
+      } ${randomBgWhite}`}
+    >
+      <span className={`font-medium ${isHeader ? "text-xs" : "text-sm"}`}>
+        {day}
+      </span>
+    </div>
+  );
+};
+
+export function Calendar() {
+  const currentDate = new Date();
+  const currentMonth = currentDate.toLocaleString("default", { month: "long" });
+  const currentYear = currentDate.getFullYear();
+  const firstDayOfMonth = new Date(currentYear, currentDate.getMonth(), 1);
+  const firstDayOfWeek = firstDayOfMonth.getDay();
+  const daysInMonth = new Date(currentYear, currentDate.getMonth() + 1, 0).getDate();
+
+  const bookingLink = `https://cal.com/aliimam/designali`;
+
+  const renderCalendarDays = () => {
+    let days: React.ReactNode[] = [
+      ...dayNames.map((day) => <CalendarDay key={`header-${day}`} day={day} isHeader />),
+      ...Array(firstDayOfWeek).map((_, i) => (
+        <div key={`empty-start-${i}`} className="col-span-1 row-span-1 h-8 w-8" />
+      )),
+      ...Array(daysInMonth).fill(null).map((_, i) => <CalendarDay key={`date-${i + 1}`} day={i + 1} />),
+    ];
+    return days;
+  };
+
+  return (
+    <BentoCard height="h-auto" linkTo={bookingLink}>
+      <div className="grid h-full gap-5">
+        <div>
+          <h2 className="mb-4 text-lg md:text-3xl font-semibold">
+            Any questions about Design?
+          </h2>
+          <p className="mb-2 text-xs md:text-md text-text-secondary">
+            Feel free to reach out to me!
+          </p>
+          <Button className="mt-3 rounded-2xl">Book Now</Button>
+        </div>
+        <div className="transition-all duration-500 ease-out md:group-hover:-right-12 md:group-hover:top-5">
+          <div className="h-full w-[550px] rounded-[24px] border border-border-primary p-2 transition-colors duration-100 group-hover:border-indigo-400">
+            <div
+              className="h-full rounded-2xl border-2 border-[#A5AEB81F]/10 p-3"
+              style={{ boxShadow: "0px 2px 1.5px 0px #A5AEB852 inset" }}
+            >
+              <div className="flex items-center space-x-2">
+                <p className="text-sm">
+                  <span className="font-medium">{currentMonth}, {currentYear}</span>
+                </p>
+                <span className="h-1 w-1 rounded-full">&nbsp;</span>
+                <p className="text-xs text-text-tertiary">30 min call</p>
+              </div>
+              <div className="mt-4 grid grid-cols-7 grid-rows-5 gap-2 px-4">
+                {renderCalendarDays()}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </BentoCard>
+  );
 }
 
-.metric-card {
-  padding: var(--space-8) var(--space-6);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+interface BentoCardProps {
+  children: React.ReactNode;
+  height?: string;
+  rowSpan?: number;
+  colSpan?: number;
+  className?: string;
+  showHoverGradient?: boolean;
+  hideOverflow?: boolean;
+  linkTo?: string;
 }
 
-.metric-card__value {
-  font-size: clamp(var(--text-2xl), 1rem + 3vw, var(--text-4xl));
-  font-weight: 300;
-  font-variant-numeric: tabular-nums;
-  line-height: 1.1;
-  color: var(--color-text-primary);
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-}
+export function BentoCard({
+  children,
+  height = "h-auto",
+  className = "",
+  showHoverGradient = true,
+  hideOverflow = true,
+  linkTo,
+}: BentoCardProps) {
+  const cardContent = (
+    <div
+      className={`group relative flex flex-col rounded-2xl border border-border-primary bg-bg-primary p-6 hover:bg-indigo-100/10 dark:hover:bg-indigo-900/10 ${
+        hideOverflow && "overflow-hidden"
+      } ${height} ${className}`}
+    >
+      {linkTo && (
+        <div className="absolute bottom-4 right-6 z-[999] flex h-12 w-12 rotate-6 items-center justify-center rounded-full bg-white opacity-0 transition-all duration-300 ease-in-out group-hover:translate-y-[-8px] group-hover:rotate-0 group-hover:opacity-100">
+          <svg className="h-6 w-6 text-indigo-600" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.25 15.25V6.75H8.75" />
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 7L6.75 17.25" />
+          </svg>
+        </div>
+      )}
+      {showHoverGradient && (
+        <div className="user-select-none pointer-events-none absolute inset-0 z-30 bg-gradient-to-tl from-indigo-400/20 via-transparent to-transparent opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
+      )}
+      {children}
+    </div>
+  );
 
-.metric-card__delta {
-  font-size: var(--text-sm);
-  font-weight: 500;
-  border-radius: var(--radius-sm);
-  padding: var(--space-0-5) var(--space-2);
-}
-
-.metric-card__delta--positive {
-  color: var(--color-success);
-  background: var(--color-success-subtle);
-}
-
-.metric-card__delta--negative {
-  color: var(--color-error);
-  background: var(--color-error-subtle);
-}
-
-.metric-card__label {
-  font-size: var(--text-sm);
-  font-weight: 400;
-  color: var(--color-text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  if (linkTo) {
+    return linkTo.startsWith("/") ? (
+      <Link href={linkTo} className="block">{cardContent}</Link>
+    ) : (
+      <a href={linkTo} target="_blank" rel="noopener noreferrer" className="block">{cardContent}</a>
+    );
+  }
+  return cardContent;
 }
 ```
 
 **What separates this from the generic version:**
-- **Generic:** number at the same size and weight as the label. This: number at `text-3xl`+ weight 300, label at `text-sm` — the number IS the card, everything else is metadata.
-- **Generic:** delta displayed as plain text or a separate line. This: delta as a small pill with semantic color, sitting at baseline alongside the number — trend is immediate, not an afterthought.
-- **Generic:** proportional figures that shift widths between "1" and "8". This: `font-variant-numeric: tabular-nums` — columns of cards align their digits perfectly.
-- **Generic:** label above the number, creating ambiguity about what's primary. This: label below and visually subordinate — the reading order matches the importance order.
-- **Generic:** all text at medium/regular weight. This: number at 300 (light), delta at 500 (medium), label at 400 — three distinct weights for three distinct roles.
-
----
-
-### 7. CTA / Page Closer
-
-**What makes this impressive:**
-A compositional break — the background shifts from the page surface to a contrasting tone, creating a visual pause that signals "this section matters." The content is held to a narrow measure (`max-inline-size: 50ch`) so the eye doesn't wander. A single strong button and minimal copy. No feature list, no testimonials here — just the ask. The background break creates a stage, and the CTA is the only actor on it.
-
-**The Code:**
-
-```html
-<section class="closer">
-  <div class="closer__inner">
-    <h2 class="closer__heading">Ready to start building?</h2>
-    <p class="closer__body">Join thousands of teams who ship faster, together. No credit card required.</p>
-    <a href="/signup" class="closer__cta">Start free</a>
-  </div>
-</section>
-```
-
-```css
-.closer {
-  padding-block: clamp(var(--space-16), 8vw, var(--space-24));
-  padding-inline: var(--space-6);
-  background: var(--color-surface-contrast);
-  color: var(--color-on-contrast);
-  text-align: center;
-  display: grid;
-  place-items: center;
-}
-
-.closer__inner {
-  max-inline-size: 50ch;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.closer__heading {
-  font-size: clamp(var(--text-2xl), 1rem + 3vw, var(--text-4xl));
-  font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-}
-
-.closer__body {
-  font-size: var(--text-base);
-  opacity: 0.8;
-  line-height: 1.6;
-  max-inline-size: 38ch;
-}
-
-.closer__cta {
-  display: inline-flex;
-  align-items: center;
-  margin-block-start: var(--space-4);
-  padding: var(--space-3) var(--space-10);
-  font-size: var(--text-base);
-  font-weight: 500;
-  color: var(--color-surface-contrast);
-  background: var(--color-on-contrast);
-  border-radius: var(--radius-md);
-  text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.closer__cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px oklch(0 0 0 / 0.15);
-}
-```
-
-**What separates this from the generic version:**
-- **Generic:** same background as every other section, no visual break. This: `--color-surface-contrast` creates a full-bleed tonal shift — the page rhythm changes, signaling "this is the close."
-- **Generic:** wide content area, copy stretches across the full container. This: `max-inline-size: 50ch` — narrow measure forces focus and prevents the eye from drifting.
-- **Generic:** multiple buttons ("Start free" + "Talk to sales" + "Learn more"). This: one button. One action. The simplicity signals confidence.
-- **Generic:** heading at the same weight as previous sections. This: weight 400 at large scale, with the background contrast doing the heavy lifting — no need to shout with bold when the stage is already set.
-- **Generic:** inverted-color button is an afterthought. This: button colors are derived from the contrast surface (`color-surface-contrast` on `color-on-contrast`), creating a deliberate figure-ground inversion.
+- **Generic:** "Ready to start building?" heading with a centered button. This: a live calendar rendering the current month with highlighted available days — the CTA offers value (booking) instead of just asking for a click.
+- **Generic:** static card with no hover response. This: four layered hover effects — gradient overlay fades in, calendar border transitions to `indigo-400`, floating arrow icon rotates and translates up, and the card background shifts to `indigo-100/10` — each layer compounds.
+- **Generic:** single border treatment. This: double-border calendar — outer `rounded-[24px]` with theme transition, inner `rounded-2xl` with `inset box-shadow` — creating physical depth without elevation.
+- **Generic:** CTA is the same visual language as the rest of the page. This: the calendar widget is visually distinct — it looks like an embedded app, not a section of the landing page. Compositional surprise.
+- **Generic:** external links open in the same tab. This: `BentoCard` detects internal vs external links (`linkTo.startsWith("/")`) and renders `<Link>` vs `<a target="_blank">` — smart routing built into the component.
 
 ---
 
