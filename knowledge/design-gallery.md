@@ -93,166 +93,310 @@ Typographic drama through a 5:1 size ratio between the heading and body text, wi
 ### 2. Pricing Table
 
 **What makes this impressive:**
-The featured plan is physically larger — not just badged. Using `1fr 1.15fr 1fr` grid columns, the recommended tier occupies more space, has heavier padding, and is the only card with a filled CTA button. Hierarchy is structural: you know which plan matters before reading a single word. The non-featured cards use ghost/outline buttons, creating a clear visual funnel.
+A multi-file component system built on shadcn/Tailwind with real interactivity: monthly/yearly frequency toggle with spring-animated tab indicator (Framer Motion `layoutId`), animated price transitions via `@number-flow/react`, and four tiers with distinct visual treatments — popular gets a `ring-2 ring-primary` + radial gradient glow, highlighted (Enterprise) inverts to `bg-foreground text-background` with a grid-line overlay. Hierarchy is structural and behavioral, not just a badge.
 
 **The Code:**
 
-```html
-<section class="pricing">
-  <div class="pricing__grid">
-    <div class="pricing__card">
-      <span class="pricing__tier">Starter</span>
-      <span class="pricing__price">$9<span class="pricing__period">/mo</span></span>
-      <ul class="pricing__features">
-        <li>5 projects</li>
-        <li>Basic analytics</li>
-        <li>Email support</li>
-      </ul>
-      <a href="#" class="pricing__cta pricing__cta--outline">Choose Starter</a>
-    </div>
-    <div class="pricing__card pricing__card--featured">
-      <span class="pricing__tier">Pro</span>
-      <span class="pricing__price">$29<span class="pricing__period">/mo</span></span>
-      <ul class="pricing__features">
-        <li>Unlimited projects</li>
-        <li>Advanced analytics</li>
-        <li>Priority support</li>
-        <li>Custom domains</li>
-      </ul>
-      <a href="#" class="pricing__cta pricing__cta--filled">Choose Pro</a>
-    </div>
-    <div class="pricing__card">
-      <span class="pricing__tier">Enterprise</span>
-      <span class="pricing__price">$99<span class="pricing__period">/mo</span></span>
-      <ul class="pricing__features">
-        <li>Everything in Pro</li>
-        <li>SSO &amp; audit logs</li>
-        <li>Dedicated support</li>
-        <li>SLA guarantee</li>
-      </ul>
-      <a href="#" class="pricing__cta pricing__cta--outline">Choose Enterprise</a>
-    </div>
-  </div>
-</section>
+> **Stack:** React, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, NumberFlow.
+> **Dependencies:** `lucide-react`, `@number-flow/react`, `class-variance-authority`, `@radix-ui/react-slot`, `framer-motion`.
+
+**`components/ui/pricing-section.tsx`** — orchestrator with frequency toggle:
+
+```tsx
+"use client"
+
+import * as React from "react"
+import { PricingCard, type PricingTier } from "@/components/ui/pricing-card"
+import { Tab } from "@/components/ui/pricing-tab"
+
+interface PricingSectionProps {
+  title: string
+  subtitle: string
+  tiers: PricingTier[]
+  frequencies: string[]
+}
+
+export function PricingSection({
+  title,
+  subtitle,
+  tiers,
+  frequencies,
+}: PricingSectionProps) {
+  const [selectedFrequency, setSelectedFrequency] = React.useState(frequencies[0])
+
+  return (
+    <section className="flex flex-col items-center gap-10 py-10">
+      <div className="space-y-7 text-center">
+        <div className="space-y-4">
+          <h1 className="text-4xl font-medium md:text-5xl">{title}</h1>
+          <p className="text-muted-foreground">{subtitle}</p>
+        </div>
+        <div className="mx-auto flex w-fit rounded-full bg-muted p-1">
+          {frequencies.map((freq) => (
+            <Tab
+              key={freq}
+              text={freq}
+              selected={selectedFrequency === freq}
+              setSelected={setSelectedFrequency}
+              discount={freq === "yearly"}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="grid w-full max-w-6xl gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        {tiers.map((tier) => (
+          <PricingCard
+            key={tier.name}
+            tier={tier}
+            paymentFrequency={selectedFrequency}
+          />
+        ))}
+      </div>
+    </section>
+  )
+}
 ```
 
-```css
-.pricing {
-  padding-block: var(--space-20);
-  background: var(--color-surface);
+**`components/ui/pricing-card.tsx`** — individual card with highlighted/popular variants:
+
+```tsx
+"use client"
+
+import * as React from "react"
+import { BadgeCheck, ArrowRight } from "lucide-react"
+import NumberFlow from "@number-flow/react"
+
+import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+
+export interface PricingTier {
+  name: string
+  price: Record<string, number | string>
+  description: string
+  features: string[]
+  cta: string
+  highlighted?: boolean
+  popular?: boolean
 }
 
-.pricing__grid {
-  display: grid;
-  grid-template-columns: 1fr 1.15fr 1fr;
-  gap: var(--space-6);
-  max-inline-size: 960px;
-  margin-inline: auto;
-  padding-inline: var(--space-6);
-  align-items: center;
+interface PricingCardProps {
+  tier: PricingTier
+  paymentFrequency: string
 }
 
-.pricing__card {
-  padding: var(--space-8) var(--space-6);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+export function PricingCard({ tier, paymentFrequency }: PricingCardProps) {
+  const price = tier.price[paymentFrequency]
+  const isHighlighted = tier.highlighted
+  const isPopular = tier.popular
+
+  return (
+    <Card
+      className={cn(
+        "relative flex flex-col gap-8 overflow-hidden p-6",
+        isHighlighted
+          ? "bg-foreground text-background"
+          : "bg-background text-foreground",
+        isPopular && "ring-2 ring-primary"
+      )}
+    >
+      {isHighlighted && <HighlightedBackground />}
+      {isPopular && <PopularBackground />}
+
+      <h2 className="flex items-center gap-3 text-xl font-medium capitalize">
+        {tier.name}
+        {isPopular && (
+          <Badge variant="secondary" className="mt-1 z-10">
+            Most Popular
+          </Badge>
+        )}
+      </h2>
+
+      <div className="relative h-12">
+        {typeof price === "number" ? (
+          <>
+            <NumberFlow
+              format={{
+                style: "currency",
+                currency: "USD",
+                trailingZeroDisplay: "stripIfInteger",
+              }}
+              value={price}
+              className="text-4xl font-medium"
+            />
+            <p className="-mt-2 text-xs text-muted-foreground">
+              Per month/user
+            </p>
+          </>
+        ) : (
+          <h1 className="text-4xl font-medium">{price}</h1>
+        )}
+      </div>
+
+      <div className="flex-1 space-y-2">
+        <h3 className="text-sm font-medium">{tier.description}</h3>
+        <ul className="space-y-2">
+          {tier.features.map((feature, index) => (
+            <li
+              key={index}
+              className={cn(
+                "flex items-center gap-2 text-sm font-medium",
+                isHighlighted ? "text-background" : "text-muted-foreground"
+              )}
+            >
+              <BadgeCheck className="h-4 w-4" />
+              {feature}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <Button
+        variant={isHighlighted ? "secondary" : "default"}
+        className="w-full"
+      >
+        {tier.cta}
+        <ArrowRight className="ml-2 h-4 w-4" />
+      </Button>
+    </Card>
+  )
 }
 
-.pricing__card--featured {
-  padding: var(--space-12) var(--space-8);
-  border-color: var(--color-primary);
-  background: var(--color-surface-elevated);
-  box-shadow: 0 4px 24px oklch(0 0 0 / 0.08);
+const HighlightedBackground = () => (
+  <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:45px_45px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+)
+
+const PopularBackground = () => (
+  <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.1),rgba(255,255,255,0))]" />
+)
+```
+
+**`components/ui/pricing-tab.tsx`** — spring-animated frequency toggle:
+
+```tsx
+"use client"
+
+import * as React from "react"
+import { motion } from "framer-motion"
+
+import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
+
+interface TabProps {
+  text: string
+  selected: boolean
+  setSelected: (text: string) => void
+  discount?: boolean
 }
 
-.pricing__tier {
-  font-size: var(--text-sm);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-secondary);
+export function Tab({
+  text,
+  selected,
+  setSelected,
+  discount = false,
+}: TabProps) {
+  return (
+    <button
+      onClick={() => setSelected(text)}
+      className={cn(
+        "relative w-fit px-4 py-2 text-sm font-semibold capitalize",
+        "text-foreground transition-colors",
+        discount && "flex items-center justify-center gap-2.5"
+      )}
+    >
+      <span className="relative z-10">{text}</span>
+      {selected && (
+        <motion.span
+          layoutId="tab"
+          transition={{ type: "spring", duration: 0.4 }}
+          className="absolute inset-0 z-0 rounded-full bg-background shadow-sm"
+        />
+      )}
+      {discount && (
+        <Badge
+          variant="secondary"
+          className={cn(
+            "relative z-10 whitespace-nowrap shadow-none",
+            selected && "bg-muted"
+          )}
+        >
+          Save 35%
+        </Badge>
+      )}
+    </button>
+  )
 }
+```
 
-.pricing__price {
-  font-size: var(--text-3xl);
-  font-weight: 300;
-  font-variant-numeric: tabular-nums;
-  color: var(--color-text-primary);
-}
+**Demo usage:**
 
-.pricing__period {
-  font-size: var(--text-base);
-  font-weight: 400;
-  color: var(--color-text-tertiary);
-}
+```tsx
+import { PricingSection } from "@/components/ui/pricing-section"
 
-.pricing__features {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  color: var(--color-text-secondary);
-  font-size: var(--text-sm);
-  flex-grow: 1;
-}
+const PAYMENT_FREQUENCIES = ["monthly", "yearly"]
 
-.pricing__cta--outline {
-  display: inline-flex;
-  justify-content: center;
-  padding: var(--space-3) var(--space-6);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
-  color: var(--color-text-primary);
-  background: transparent;
-  font-weight: 500;
-  text-decoration: none;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
+const TIERS = [
+  {
+    id: "individuals",
+    name: "Individuals",
+    price: { monthly: "Free", yearly: "Free" },
+    description: "For your hobby projects",
+    features: ["Free email alerts", "3-minute checks", "Automatic data enrichment", "10 monitors", "Up to 3 seats"],
+    cta: "Get started",
+  },
+  {
+    id: "teams",
+    name: "Teams",
+    price: { monthly: 90, yearly: 75 },
+    description: "Great for small businesses",
+    features: ["Unlimited phone calls", "30 second checks", "Single-user account", "20 monitors", "Up to 6 seats"],
+    cta: "Get started",
+    popular: true,
+  },
+  {
+    id: "organizations",
+    name: "Organizations",
+    price: { monthly: 120, yearly: 100 },
+    description: "Great for large businesses",
+    features: ["Unlimited phone calls", "15 second checks", "Single-user account", "50 monitors", "Up to 10 seats"],
+    cta: "Get started",
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise",
+    price: { monthly: "Custom", yearly: "Custom" },
+    description: "For multiple teams",
+    features: ["Everything in Organizations", "Up to 5 team members", "100 monitors", "15 status pages", "200+ integrations"],
+    cta: "Contact Us",
+    highlighted: true,
+  },
+]
 
-.pricing__cta--outline:hover {
-  border-color: var(--color-primary);
-  background: var(--color-surface-hover);
-}
-
-.pricing__cta--filled {
-  display: inline-flex;
-  justify-content: center;
-  padding: var(--space-3) var(--space-6);
-  border: none;
-  border-radius: var(--radius-md);
-  color: var(--color-on-primary);
-  background: var(--color-primary);
-  font-weight: 500;
-  text-decoration: none;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.pricing__cta--filled:hover {
-  background: var(--color-primary-hover);
-  transform: translateY(-1px);
-}
-
-@media (max-width: 768px) {
-  .pricing__grid {
-    grid-template-columns: 1fr;
-    max-inline-size: 400px;
-  }
-  .pricing__card--featured {
-    order: -1;
-  }
+export function PricingSectionDemo() {
+  return (
+    <div className="relative flex justify-center items-center w-full mt-20 scale-90">
+      <div className="absolute inset-0 -z-10">
+        <div className="h-full w-full bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:35px_35px] opacity-30 [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+      </div>
+      <PricingSection
+        title="Simple Pricing"
+        subtitle="Choose the best plan for your needs"
+        frequencies={PAYMENT_FREQUENCIES}
+        tiers={TIERS}
+      />
+    </div>
+  )
 }
 ```
 
 **What separates this from the generic version:**
-- **Generic:** three identical cards with a "Most Popular" badge on one. This: the featured card is 15% wider and has 50% more padding — hierarchy is structural, not label-dependent.
-- **Generic:** all three buttons are filled/primary. This: only the featured card gets a filled CTA; others use outline, creating a visual funnel toward the recommended choice.
-- **Generic:** price at the same weight as the tier name. This: price at weight 300 with tabular figures, tier name at small-caps 500 — each element has its own typographic role.
-- **Generic:** flat cards with identical borders. This: featured card has a primary-colored border, elevated background, and subtle shadow — three signals that compound.
+- **Generic:** three identical cards with a "Most Popular" text badge. This: four tiers with three distinct visual treatments — default, popular (`ring-2` + radial glow), and highlighted (full foreground/background inversion with grid-line overlay). Hierarchy is compounded, not single-signal.
+- **Generic:** static price text that snaps between monthly/yearly. This: `NumberFlow` animates the numeric transition with interpolated digits, and a spring-physics tab indicator (`layoutId`) makes the frequency toggle feel physical.
+- **Generic:** all buttons identical. This: highlighted tier gets `variant="secondary"` (inverted context), others get `variant="default"` — the CTA adapts to its card's visual context rather than being uniform.
+- **Generic:** no background texture or depth. This: highlighted card gets a CSS grid-line overlay masked with a radial gradient; popular card gets a subtle radial purple glow. Texture creates depth without images.
+- **Generic:** pricing is a static layout. This: a component system — `PricingSection` orchestrates state, `PricingCard` handles variants, `Tab` handles selection — designed for real integration, not a screenshot.
 
 ---
 
