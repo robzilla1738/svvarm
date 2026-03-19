@@ -244,7 +244,7 @@ Why: [one sentence]
 
 ## Copy Output Format (Full Build)
 
-When dispatched as part of a Full Build Workflow, you must return **structured copy mapped to the Layout Lead's HTML placeholders**. The CDO will insert your copy directly into the skeleton.
+When dispatched as part of a Full Build Workflow, you must return **structured copy mapped to the Layout Lead's HTML placeholders**. This copy will be included in the Design Specification.
 
 ### Required Output Structure
 

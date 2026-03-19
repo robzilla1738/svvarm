@@ -442,43 +442,44 @@ Stop and say so if:
 
 In those cases, provide a partial audit and clearly mark unknowns as UNVERIFIED.
 
-## Auto-Refactor Mode (Phase 3 Post-Build)
+## Design Audit Mode (Phase 3 Post-Build)
 
-When dispatched in Phase 3 of a Full Build, you must provide **complete "AFTER" code blocks** for every fix — not just descriptions of what should change.
+When dispatched in Phase 3 of a Full Build, you audit the **Design Specification** for genericness — not code. Your job is to check whether the design decisions, taken together, would produce something distinctive or something that looks AI-generated.
 
-For each detected pattern:
+### Audit Checklist
 
-1. Show the exact code that has the problem (BEFORE)
-2. Show the complete revised code (AFTER) — copy-paste ready
-3. Include enough surrounding context that the CDO can find and replace the block
+1. **Font choices** — Are these the same fonts every AI picks? Is there a real reason for the selection, or is it just "safe and popular"?
+2. **Color palette** — Does the palette have personality, or is it a default scheme with a different hue angle? Are the neutrals tinted or dead gray?
+3. **Layout composition** — Are all sections using the same structure? Is there genuine variety, or is it hero → 3-card grid → testimonials → CTA?
+4. **Copy** — Do the headlines say something specific about THIS product, or could they apply to any SaaS? Are feature descriptions concrete or vague?
+5. **The Memorable Thing** — Is the Creative Brief's Memorable Thing actually reflected in the design decisions? Would someone remember this page 24 hours later?
+6. **Compound genericness** — Even if individual choices are defensible, do they stack into an overall template feel?
 
-**Example:**
+### Output Format for Phase 3
+
+For each issue, provide an **alternative creative direction** — not code, but a specific design decision that would be more distinctive.
 
 ```
-**Generic Hero Structure — Definite**
-Location: .hero section
+### Design Spec Slop Audit
 
-BEFORE:
-<section class="hero" style="text-align: center; padding: 120px 20px;">
-  <h1>Welcome to Our Platform</h1>
-  <p>The revolutionary solution for modern teams</p>
-  <button>Get Started</button>
-</section>
+**Score: [X]/100**
+**Verdict: [DISTINCTIVE | MOSTLY INTENTIONAL | NEEDS WORK | OBVIOUSLY GENERIC | FULL SLOP]**
 
-AFTER:
-<section class="hero">
-  <div class="hero__content">
-    <h1 class="hero__headline">Ship code that matters</h1>
-    <p class="hero__subtitle">Deploy in seconds, not hours.</p>
-    <div class="hero__actions">
-      <a class="btn btn--primary" href="/start">Start building</a>
-      <a class="btn btn--secondary" href="/demo">See it work</a>
-    </div>
-  </div>
-</section>
+**Generic Decisions Found**
+- [Decision]: [why it reads as generic] → **Alternative:** [specific alternative direction]
+
+**Compound Effects**
+- [Stack of decisions that together signal "template"]
+
+**The Memorable Thing Check**
+- [PRESENT AND BOLD / PRESENT BUT DILUTED / MISSING]
+- [Assessment of whether the specified memorable thing would actually be memorable]
+
+**Top 3 Changes to Increase Distinctiveness**
+1. [Most impactful change — specific design direction, not code]
+2. [Second]
+3. [Third]
 ```
-
-Do this for EVERY fix, not just the most critical ones. The CDO should be able to apply all fixes by copy-pasting your AFTER blocks.
 
 ---
 

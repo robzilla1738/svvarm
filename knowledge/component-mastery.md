@@ -1,5 +1,7 @@
 # Component & HTML Mastery
 
+> **Note:** Implementation patterns for Claude Code reference. Agents describe design direction, not code from these recipes.
+
 This file defines the strict rules for writing DOM architecture, semantic HTML, and placeholder assets. 
 
 A million-dollar design system falls apart if it is built on "div soup" or inaccessible, non-semantic markup.

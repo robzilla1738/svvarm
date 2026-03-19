@@ -437,34 +437,37 @@ Stop and say so if:
 
 In these cases, still provide the best partial cleanup you can, but clearly label assumptions.
 
-## Auto-Apply Mode (Phase 3 Post-Build)
+## Design Audit Mode (Phase 3 Post-Build)
 
-When dispatched in Phase 3 of a Full Build, you must provide a **complete revised stylesheet** with ALL polish fixes already applied — not scattered individual fixes.
+When dispatched in Phase 3 of a Full Build, you audit the **Design Specification** — not code. Your job is to check the spec for internal consistency, token coherence, and cross-agent alignment before it reaches implementation.
+
+### Audit Checklist
+
+1. **Spacing consistency** — Do the spacing values used in section compositions align with the defined spacing scale? Are there any one-off values that should map to a token?
+2. **Token coherence** — Do color role assignments, typography roles, and spacing tokens form a coherent system? Are there near-duplicate values that should be consolidated?
+3. **Cross-agent alignment** — Do Typography Lead's font choices work with Color Lead's palette? Does Layout Lead's spacing rhythm support Typography Lead's type scale? Does Content Lead's copy length match Layout Lead's composition constraints?
+4. **Radius/shadow/border philosophy** — Is there a consistent approach to surface treatment across all sections?
+5. **Dark mode consistency** — If dark mode is specified, do typography weight adjustments align with color lightness changes?
+6. **Visual hierarchy** — Does the squint test pass? Is the most important content given appropriate prominence through the combined effect of typography, color, spacing, and layout?
 
 ### Output Format for Phase 3
 
-After identifying all issues (using the standard evaluation rubric), produce:
-
-1. **Issues summary** — Brief list of what you found and fixed
-2. **Complete revised CSS** — The entire stylesheet with every fix applied, ready for the CDO to paste as a full replacement
-
 ```
-### Issues Fixed
-1. Radius drift: normalized all border-radius to 0.375rem (small) and 0.75rem (large)
-2. Spacing: collapsed 3 near-matching gap values to --space-md
-3. Typography: tightened heading tracking from 0 to -0.01em
-4. Hover consistency: unified all button transitions to 150ms ease
+### Design Spec Audit
 
-### Complete Revised Stylesheet
+**Consistency Issues**
+- [Issue]: [what conflicts] → [recommended resolution]
 
-/* Paste this as a full replacement */
-:root {
-  /* ... all tokens ... */
-}
-/* ... all styles with fixes applied ... */
+**Token Consolidation**
+- [Near-duplicate values] → [recommended single token]
+
+**Cross-Agent Conflicts**
+- [Agent A decision] vs [Agent B decision] → [recommended resolution]
+
+**Verdict**
+[PASS — spec is internally consistent and ready for implementation]
+[NEEDS REVISION — list specific items to fix before implementation]
 ```
-
-This saves the CDO from manually applying dozens of small fixes. One copy-paste replaces the entire stylesheet.
 
 ---
 

@@ -328,34 +328,37 @@ Stop and say so if:
 
 In those cases, provide the best code-based audit you can, label assumptions clearly, and mark unknowns as UNVERIFIED.
 
-## Complete Code Output (HARDEN Mode for Full Build)
+## Design Audit Mode (Phase 3 Post-Build)
 
-When dispatched in HARDEN mode during or after a Full Build, you must provide a **complete revised file** — not just code snippets for individual fixes.
+When dispatched in Phase 3 of a Full Build, you audit the **Design Specification** for production feasibility — not code. Your job is to flag design decisions that will cause responsive, accessibility, or performance problems before they reach implementation.
 
-### Output Format for HARDEN in Full Build
+### Audit Checklist
 
-After running all evaluation passes, produce:
+1. **Responsive feasibility** — Can the specified layouts actually adapt from 320px to 1200px+? Are there compositions that will break at intermediate widths? Are fluid values specified where needed?
+2. **Accessibility risks** — Do color contrast ratios pass WCAG AA? Are touch targets adequate? Will the specified typography remain readable under zoom? Are focus states accounted for in the interaction descriptions?
+3. **Content resilience** — Will the layouts handle text expansion (i18n), long names, missing images? Are content length assumptions realistic?
+4. **Touch targets** — Are interactive elements specified with adequate sizing (44x44px minimum)?
+5. **Performance considerations** — Are there motion/animation descriptions that could cause jank? Are image-heavy sections accounted for with loading strategies?
+6. **Semantic structure** — Does the section composition imply a logical DOM order that supports keyboard navigation and screen readers?
 
-1. **Issues summary** — Brief list of what you found and fixed, with severity
-2. **Complete revised HTML/CSS** — The entire file(s) with every FAIL and WARN fix applied
+### Output Format for Phase 3
 
 ```
-### Issues Fixed
-1. FAIL: Missing focus-visible styles → added to all interactive elements
-2. FAIL: No reduced-motion support → added prefers-reduced-motion media query
-3. WARN: Hero uses 100vh → changed to min-block-size: 100dvh
-4. WARN: Touch targets under 44px → increased button/link padding
+### Design Spec Production Audit
 
-### Complete Revised File
+**Responsive Risks**
+- [Section/component]: [what will break] → [recommended spec change]
 
-<!-- Paste as full replacement -->
-<!DOCTYPE html>
-<html lang="en">
-  <!-- ... entire hardened file ... -->
-</html>
+**Accessibility Risks**
+- [Issue]: [what fails] → [recommended spec change]
+
+**Content Resilience**
+- [Assumption]: [why it's risky] → [recommended safeguard]
+
+**Verdict**
+[PASS — spec is production-feasible]
+[NEEDS REVISION — list specific items to address before implementation]
 ```
-
-The CDO should be able to replace the entire file with your output. Do not make them hunt through scattered snippets to apply fixes.
 
 ---
 

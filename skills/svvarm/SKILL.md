@@ -341,22 +341,23 @@ Include this convention AND the list of sections the page will have (from the Cr
 
 Each agent returns design decisions as structured output (tokens, values, copy). The CDO collects ALL results, verifies each against the design brief, resolves any conflicts between agents, THEN assembles the page.
 
-**Phase 2 — CDO assembles the page (Assembly Protocol):**
+**Phase 2 — Design Specification Assembly:**
 
-With all design decisions in hand, the CDO writes the actual code. Follow this exact merge order — later layers override earlier for conflicts:
+With all design decisions in hand, the CDO synthesizes agent outputs into a unified **Design Specification** — a structured markdown document. The CDO does NOT write code. The Design Specification is handed to Claude Code, which implements it.
 
-1. **Layout Lead spacing tokens** → Define CSS custom properties in `:root`
-2. **Color Lead tokens** → Add to the same `:root` block
-3. **Typography Lead tokens** → Add to the same `:root` block
-4. **Layout Lead HTML skeleton** → Build the complete DOM structure with semantic tags, classes, and `{{placeholder}}` markers
-5. **Typography role styles** → Apply font sizes, weights, line-heights, tracking to the skeleton elements
-6. **Content Lead copy** → Insert final copy into all placeholder positions
-7. **Color/surface application** → The CDO applies Color Lead's role tokens to Layout Lead's HTML elements: `background: var(--color-bg)` on body, `background: var(--color-surface)` on cards, `color: var(--color-text)` on text elements, `border-color: var(--color-border)` on separators. Use the component recipes in `knowledge/component-mastery.md` as reference.
+**Specification Sections:**
 
-**Dark mode cross-check:** If the project includes dark mode, verify that Color Lead's dark text color (e.g., `oklch(93% 0 0)`) combined with Typography Lead's dark mode font weight (e.g., `300`) produces readable text. Light weight + muted color on dark backgrounds can fail contrast. Adjust weight up or lightness up if needed.
+1. **Creative Brief** — The Vibe, The Memorable Thing, and The Ambition from Phase 0
+2. **Typography** — Font names, sources, fallback stacks, type scale table (role / min size / max size / weight / line-height / tracking), dark mode adjustments, loading strategy
+3. **Color** — OKLCH palette tables (primitive scales + role assignments), dark mode overrides, contrast verification results
+4. **Layout** — Section-by-section composition (layout strategy / spacing / content hierarchy / responsive adaptation), spacing scale, section variety requirements, placeholder mapping, responsive breakpoints
+5. **Copy** — All copy keyed to placeholder names from the Layout section
+6. **Interaction & Motion** — Hover behaviors, focus styles, transitions, scroll-triggered effects, reduced-motion considerations (described in prose, not code)
+7. **Surfaces & Edges** — Border-radius philosophy, shadow approach, surface layering strategy, elevation model
 
-8. **Interaction/motion** → The CDO adds hover states, focus styles, transitions, and scroll-triggered effects. Reference `knowledge/interaction-mastery.md` and `knowledge/motion-mastery.md` for interaction patterns. Adapt to the project's style direction described in the design brief.
-9. **Memorable Thing check** → **HARD GATE.** Before proceeding to Phase 3, verify The Memorable Thing from the Creative Brief is present and visible. If it's missing or diluted, fix it now.
+**Dark mode cross-check:** If the project includes dark mode, verify that Color Lead's dark text lightness combined with Typography Lead's dark mode font weight produces readable text. Light weight + muted color on dark backgrounds can fail contrast. Flag the conflict in the spec if found.
+
+**Memorable Thing check** → **HARD GATE.** Before proceeding to Phase 3, verify The Memorable Thing from the Creative Brief is reflected in the design decisions. If it's missing or diluted, redirect the responsible agent with clearer constraints.
 
 **Conflict resolution rules:**
 1. **Color Lead wins** on text color decisions (they own contrast and readability)
@@ -372,33 +373,27 @@ With all design decisions in hand, the CDO writes the actual code. Follow this e
 11. **Polish Lead vs original decisions** — Polish Lead can normalize spacing, alignment, and consistency. Polish Lead cannot reverse approved creative decisions (e.g., an intentionally asymmetric layout, an unconventional color choice). If Polish Lead flags a creative choice as inconsistent, CDO reviews against the Creative Brief before accepting or rejecting.
 12. **Slop Auditor vs Creative Brief** — CDO can override specific Slop Auditor flags if the flagged pattern is intentional and documented in the Creative Brief. Example: if the brief says "use gradient text for the hero heading," the Slop Auditor's gradient-text flag is overridden. The override must be explicit — "the brief says X, so this flag is dismissed."
 
-**Final Output Format:**
+**Final Output:**
 
-Assemble the page as a single, self-contained HTML file with:
-- All CSS in a `<style>` block in `<head>` (tokens, layout, typography, color, interaction)
-- All `{{placeholder}}` markers replaced with Content Lead's final copy
-- Responsive CSS for 320px, 768px, and 1200px+ viewports included
-- Dark mode CSS included if the project brief specifies dark mode
+The Design Specification is written as a markdown document and saved to `.svvarm/design-spec.md`. Claude Code reads this spec and implements the actual code — the CDO does not write code.
 
-If the project uses a framework (React, Vue, Next.js, etc.), adapt to the framework's conventions instead — but still deliver complete, runnable code.
+**Phase 3 — Specification audit (parallel agents):**
 
-**Phase 3 — Quality verification (parallel agents):**
+**Include the Creative Brief (Vibe, Memorable Thing, Ambition) in every auditor's dispatch prompt.** Each auditor checks the Design Specification — not code — for issues in their domain.
 
-**Include the Creative Brief (Vibe, Memorable Thing, Constraint) in the Slop Auditor's dispatch prompt.** The auditor must check not just for generic patterns, but also verify that The Memorable Thing from the brief is actually present and visible in the final output.
-
-After the page is built, dispatch:
+Dispatch in parallel:
 ```
 ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
 │  Slop Auditor   │  │  Polish Lead    │  │ Production Lead │
-│  AI pattern     │  │  Alignment,     │  │  Responsive,    │
-│  detection      │  │  consistency    │  │  a11y, perf     │
+│  Design spec    │  │  Spec internal  │  │  Spec feasibility│
+│  genericness    │  │  consistency    │  │  & a11y risks   │
 └─────────────────┘  └─────────────────┘  └─────────────────┘
 ```
 
 **Remediation rules:**
-- If Slop Auditor scores below 70: identify the top 3 patterns and fix them directly in the assembled code. If the issue is structural (layout monotony, generic hero), re-dispatch the responsible agent with specific corrections.
-- If Polish Lead finds critical issues: apply the fixes from Polish Lead's auto-refactor output directly.
-- If Production Lead finds responsive or a11y failures: fix them directly — these are typically CSS-level fixes the CDO can make from the Production Lead's recommendations.
+- If Slop Auditor scores below 70: identify the top 3 generic design decisions and re-dispatch the responsible agent with specific creative direction corrections. Update the Design Specification with revised decisions.
+- If Polish Lead finds consistency issues: resolve token conflicts and cross-agent misalignments in the Design Specification directly.
+- If Production Lead finds feasibility or a11y risks: annotate the Design Specification with constraints or revise the problematic design decisions.
 - After fixes, re-run Slop Auditor only (not all three) to verify the score improved.
 
 **Phase 4 — Save ALL agent memories:**
@@ -412,9 +407,9 @@ uv run <plugin_root>/scripts/memory.py save layout-lead "summary..."
 ```
 
 **CRITICAL RULES for Full Build:**
-- **Never start writing code with partial agent results.** If 2 of 4 agents have returned, wait for the other 2.
+- **Never start finalizing the specification with partial agent results.** If 2 of 4 agents have returned, wait for the other 2.
 - **Never skip the Layout Lead.** The CDO should NOT do layout composition alone — the Layout Lead has the knowledge files for spacing systems, grid patterns, and anti-slop layout.
-- **Always run post-build quality check.** The Slop Auditor catches what the CDO might miss.
+- **Always run the specification audit.** The Slop Auditor catches what the CDO might miss.
 - **Save ALL memories.** Every dispatched agent must have its decisions saved.
 
 ### Extreme
@@ -622,5 +617,4 @@ Before delivering any design work:
 - [ ] **Spacing**: Varied rhythm — groups tight, separations generous
 - [ ] **The memorable thing**: Can name the one choice someone would remember
 - [ ] **Accessibility**: Focus states, semantic HTML, reduced-motion, contrast
-- [ ] **Code quality**: Clean, semantic, performant
 - [ ] **Memory saved**: Key decisions saved to specialist memories
