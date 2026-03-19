@@ -44,13 +44,13 @@ Model assignments control cost/speed tradeoffs. Check `.svvarm/config.json`:
 
 ```json
 {
-  "main_model": "sonnet",
-  "agent_model": "haiku"
+  "main_model": "opus",
+  "agent_model": "opus"
 }
 ```
 
-- `main_model` — the CDO orchestrator (synthesis, routing, design brief). Defaults to `"sonnet"`.
-- `agent_model` — all specialist subagents (Slop Auditor, Typography Lead, Color Lead, Layout Lead, Polish Lead, Production Lead, Content Lead). Defaults to `"haiku"`.
+- `main_model` — the CDO orchestrator (synthesis, routing, design brief). Defaults to `"opus"`.
+- `agent_model` — all specialist subagents (Slop Auditor, Typography Lead, Color Lead, Layout Lead, Polish Lead, Production Lead, Content Lead). Defaults to `"opus"`.
 
 Valid values: `"opus"`, `"sonnet"`, `"haiku"`.
 
@@ -528,7 +528,7 @@ This means the 5th time the Typography Lead is dispatched on this project, it al
 
 ### How to Dispatch
 
-When dispatching a specialist, use the Agent tool with `model` set to the `agent_model` from `.svvarm/config.json` (default: `"haiku"`). Your prompt to the agent MUST include:
+When dispatching a specialist, use the Agent tool with `model` set to the `agent_model` from `.svvarm/config.json` (default: `"opus"`). Your prompt to the agent MUST include:
 
 1. **The agent's role instructions** — Read the agent prompt from `<plugin_root>/agents/{name}.md` and include the full content
 2. **Knowledge file paths** — Tell the agent to READ the knowledge files using absolute paths:
