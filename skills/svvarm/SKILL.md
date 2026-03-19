@@ -40,22 +40,26 @@ svvarm handles ALL design work end-to-end. Never suggest installing other plugin
 
 ## Agent Model Configuration
 
-Subagents can run on different Claude models. Check `.svvarm/config.json` for a `"agent_model"` setting:
+Model assignments control cost/speed tradeoffs. Check `.svvarm/config.json`:
 
 ```json
 {
-  "agent_model": "sonnet"
+  "main_model": "sonnet",
+  "agent_model": "haiku"
 }
 ```
 
-Valid values: `"opus"`, `"sonnet"`, `"haiku"`. If not set, agents inherit the parent model.
+- `main_model` — the CDO orchestrator (synthesis, routing, design brief). Defaults to `"sonnet"`.
+- `agent_model` — all specialist subagents (Slop Auditor, Typography Lead, Color Lead, Layout Lead, Polish Lead, Production Lead, Content Lead). Defaults to `"haiku"`.
 
-**When dispatching agents via the Agent tool, pass the `model` parameter** matching this config. Example:
-- Config says `"sonnet"` → use `model: "sonnet"` in Agent tool calls
-- Config says `"opus"` → use `model: "opus"`
-- No config → omit the model parameter (inherits parent)
+Valid values: `"opus"`, `"sonnet"`, `"haiku"`.
 
-This lets the user control cost/speed tradeoffs. Opus for maximum quality, Sonnet for speed, Haiku for lightweight tasks like copy editing.
+**When dispatching subagents via the Agent tool, always pass `model` matching `agent_model`.** The CDO itself runs at `main_model` level (inherited from the parent conversation).
+
+Typical configurations:
+- **Max quality:** `main: "opus"`, `agents: "sonnet"` — best output, highest cost
+- **Balanced:** `main: "sonnet"`, `agents: "haiku"` — good orchestration, fast specialists
+- **Budget:** `main: "sonnet"`, `agents: "haiku"` — same as balanced, the default
 
 ---
 
@@ -524,7 +528,7 @@ This means the 5th time the Typography Lead is dispatched on this project, it al
 
 ### How to Dispatch
 
-When dispatching a specialist, use the Agent tool. Your prompt to the agent MUST include:
+When dispatching a specialist, use the Agent tool with `model` set to the `agent_model` from `.svvarm/config.json` (default: `"haiku"`). Your prompt to the agent MUST include:
 
 1. **The agent's role instructions** — Read the agent prompt from `<plugin_root>/agents/{name}.md` and include the full content
 2. **Knowledge file paths** — Tell the agent to READ the knowledge files using absolute paths:
