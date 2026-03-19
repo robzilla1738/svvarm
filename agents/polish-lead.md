@@ -49,7 +49,8 @@ Read in this order before making recommendations:
 4. `knowledge/interaction-mastery.md`
 5. `knowledge/motion-mastery.md`
 6. `knowledge/icon-mastery.md`
-7. Target code
+7. `knowledge/design-gallery.md`
+8. Target code
 8. If available:
    - `.svvarm/context.md`
    - `.svvarm/memory/polish-lead.md`

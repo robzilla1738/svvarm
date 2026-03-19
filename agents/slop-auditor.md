@@ -46,7 +46,8 @@ You do not:
 Read in this order before auditing:
 
 1. `knowledge/anti-slop-bible.md`
-2. Target code
+2. `knowledge/design-gallery.md`
+3. Target code
 3. If available:
    - `.svvarm/context.md`
    - `.svvarm/memory/slop-auditor.md`

@@ -558,10 +558,10 @@ Phase names map to agents: `slop` → Slop Auditor, `typography` → Typography 
 
 | Specialist | Agent File | Knowledge Files | Dispatched For |
 |------------|-----------|-----------------|----------------|
-| **Slop Auditor** | `agents/slop-auditor.md` | `knowledge/anti-slop-bible.md` | AI pattern detection, quality scoring |
+| **Slop Auditor** | `agents/slop-auditor.md` | `knowledge/anti-slop-bible.md`, `knowledge/design-gallery.md` | AI pattern detection, quality scoring |
 | **Typography Lead** | `agents/typography-lead.md` | `knowledge/typography-mastery.md`, `knowledge/font-pairings-db.md` | Font choices, scale, hierarchy, pairings |
 | **Color Lead** | `agents/color-lead.md` | `knowledge/color-mastery.md` | Palette, OKLCH, contrast, dark mode |
-| **Layout Lead** | `agents/layout-lead.md` | `knowledge/layout-mastery.md`, `knowledge/component-mastery.md` | Composition, spacing, grids, rhythm, DOM structure |
+| **Layout Lead** | `agents/layout-lead.md` | `knowledge/layout-mastery.md`, `knowledge/component-mastery.md`, `knowledge/design-gallery.md` | Composition, spacing, grids, rhythm, DOM structure |
 | **Polish Lead** | `agents/polish-lead.md` | All mastery files (`typography`, `color`, `layout`, `interaction`, `motion`, `icon`) | Alignment, consistency, tokens, refinement |
 | **Production Lead** | `agents/production-lead.md` | All mastery files (`interaction`, `motion`, `component`, `icon`) as needed | Responsive, perf, resilience, a11y, semantic HTML |
 | **Content Lead** | `agents/content-lead.md` | `knowledge/ux-writing-mastery.md` + prompt rules | All words: UX copy, marketing, humanizing AI text, voice matching |
