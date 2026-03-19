@@ -1,6 +1,6 @@
 # Design Gallery — Visual Excellence Reference
 
-> **Usage:** These are not templates. They demonstrate techniques that separate "designed" from "generated." Adapt the principles to the project's style direction — not the specific code. When reviewing or building, ask: "Does this element have the intentionality shown here, or does it feel like a default?" Every code example uses design tokens (`var(--color-*)`, `var(--space-*)`, `var(--text-*)`) so they inherit whatever palette the project defines. The point is the structure, the ratios, and the decisions — not the colors.
+> **Usage:** These are not templates to copy verbatim. They demonstrate techniques and structural patterns that separate "designed" from "generated." The specific text, colors, URLs, branding, and copy are all placeholder — adapt the principles to the project's style direction. When reviewing or building, ask: "Does this element have the intentionality shown here, or does it feel like a default?" The point is the structure, the interaction patterns, the hover choreography, and the compositional decisions — not the specific content.
 
 ---
 
@@ -85,7 +85,7 @@ export function HeroSection() {
                             }}
                             className="absolute inset-0 -z-20">
                             <img
-                                src="https://ik.imagekit.io/lrigu76hy/tailark/night-background.jpg?updatedAt=1745733451120"
+                                src="/images/hero-bg-dark.jpg"
                                 alt="background"
                                 className="absolute inset-x-0 top-56 -z-20 hidden lg:top-32 dark:block"
                                 width="3276"
@@ -99,7 +99,7 @@ export function HeroSection() {
                                     <Link
                                         href="#link"
                                         className="hover:bg-background dark:hover:border-t-border bg-muted group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md shadow-black/5 transition-all duration-300 dark:border-t-white/5 dark:shadow-zinc-950">
-                                        <span className="text-foreground text-sm">Introducing Support for AI Models</span>
+                                        <span className="text-foreground text-sm">Announcing our latest feature</span>
                                         <span className="dark:border-background block h-4 w-0.5 border-l bg-white dark:bg-zinc-700"></span>
                                         <div className="bg-background group-hover:bg-muted size-6 overflow-hidden rounded-full duration-500">
                                             <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
@@ -113,10 +113,10 @@ export function HeroSection() {
                                         </div>
                                     </Link>
                                     <h1 className="mt-8 max-w-4xl mx-auto text-balance text-6xl md:text-7xl lg:mt-16 xl:text-[5.25rem]">
-                                        Modern Solutions for Customer Engagement
+                                        Build something worth remembering
                                     </h1>
                                     <p className="mx-auto mt-8 max-w-2xl text-balance text-lg">
-                                        Highly customizable components for building modern websites and applications that look and feel the way you mean it.
+                                        The platform for teams who ship with intention. Replace placeholder copy with your own.
                                     </p>
                                 </AnimatedGroup>
 
@@ -166,14 +166,14 @@ export function HeroSection() {
                                 <div className="inset-shadow-2xs ring-background dark:inset-shadow-white/20 bg-background relative mx-auto max-w-6xl overflow-hidden rounded-2xl border p-4 shadow-lg shadow-zinc-950/15 ring-1">
                                     <img
                                         className="bg-background aspect-15/8 relative hidden rounded-2xl dark:block"
-                                        src="https://tailark.com/_next/image?url=%2Fmail2.png&w=3840&q=75"
+                                        src="/images/app-screenshot-dark.png"
                                         alt="app screen"
                                         width="2700"
                                         height="1440"
                                     />
                                     <img
                                         className="z-2 border-border/25 aspect-15/8 relative rounded-2xl border dark:hidden"
-                                        src="https://tailark.com/_next/image?url=%2Fmail2-light.png&w=3840&q=75"
+                                        src="/images/app-screenshot-light.png"
                                         alt="app screen"
                                         width="2700"
                                         height="1440"
@@ -192,14 +192,15 @@ export function HeroSection() {
                             </Link>
                         </div>
                         <div className="group-hover:blur-xs mx-auto mt-12 grid max-w-2xl grid-cols-4 gap-x-12 gap-y-8 transition-all duration-500 group-hover:opacity-50 sm:gap-x-16 sm:gap-y-14">
-                            <div className="flex"><img className="mx-auto h-5 w-fit dark:invert" src="https://html.tailus.io/blocks/customers/nvidia.svg" alt="Nvidia Logo" height="20" width="auto" /></div>
-                            <div className="flex"><img className="mx-auto h-4 w-fit dark:invert" src="https://html.tailus.io/blocks/customers/column.svg" alt="Column Logo" height="16" width="auto" /></div>
-                            <div className="flex"><img className="mx-auto h-4 w-fit dark:invert" src="https://html.tailus.io/blocks/customers/github.svg" alt="GitHub Logo" height="16" width="auto" /></div>
-                            <div className="flex"><img className="mx-auto h-5 w-fit dark:invert" src="https://html.tailus.io/blocks/customers/nike.svg" alt="Nike Logo" height="20" width="auto" /></div>
-                            <div className="flex"><img className="mx-auto h-5 w-fit dark:invert" src="https://html.tailus.io/blocks/customers/lemonsqueezy.svg" alt="Lemon Squeezy Logo" height="20" width="auto" /></div>
-                            <div className="flex"><img className="mx-auto h-4 w-fit dark:invert" src="https://html.tailus.io/blocks/customers/laravel.svg" alt="Laravel Logo" height="16" width="auto" /></div>
-                            <div className="flex"><img className="mx-auto h-7 w-fit dark:invert" src="https://html.tailus.io/blocks/customers/lilly.svg" alt="Lilly Logo" height="28" width="auto" /></div>
-                            <div className="flex"><img className="mx-auto h-6 w-fit dark:invert" src="https://html.tailus.io/blocks/customers/openai.svg" alt="OpenAI Logo" height="24" width="auto" /></div>
+                            {/* Replace with project's actual customer/partner logos */}
+                            <div className="flex"><img className="mx-auto h-5 w-fit dark:invert" src="/logos/partner-1.svg" alt="Partner Logo" height="20" width="auto" /></div>
+                            <div className="flex"><img className="mx-auto h-4 w-fit dark:invert" src="/logos/partner-2.svg" alt="Partner Logo" height="16" width="auto" /></div>
+                            <div className="flex"><img className="mx-auto h-4 w-fit dark:invert" src="/logos/partner-3.svg" alt="Partner Logo" height="16" width="auto" /></div>
+                            <div className="flex"><img className="mx-auto h-5 w-fit dark:invert" src="/logos/partner-4.svg" alt="Partner Logo" height="20" width="auto" /></div>
+                            <div className="flex"><img className="mx-auto h-5 w-fit dark:invert" src="/logos/partner-5.svg" alt="Partner Logo" height="20" width="auto" /></div>
+                            <div className="flex"><img className="mx-auto h-4 w-fit dark:invert" src="/logos/partner-6.svg" alt="Partner Logo" height="16" width="auto" /></div>
+                            <div className="flex"><img className="mx-auto h-7 w-fit dark:invert" src="/logos/partner-7.svg" alt="Partner Logo" height="28" width="auto" /></div>
+                            <div className="flex"><img className="mx-auto h-6 w-fit dark:invert" src="/logos/partner-8.svg" alt="Partner Logo" height="24" width="auto" /></div>
                         </div>
                     </div>
                 </section>
@@ -936,15 +937,16 @@ import { TestimonialsColumn } from "@/components/ui/testimonials-column";
 import { motion } from "motion/react";
 
 const testimonials = [
-  { text: "This revolutionized our operations, streamlining finance and inventory.", image: "https://randomuser.me/api/portraits/women/1.jpg", name: "Briana Patton", role: "Operations Manager" },
-  { text: "Implementing this was smooth and quick. The interface made team training effortless.", image: "https://randomuser.me/api/portraits/men/2.jpg", name: "Bilal Ahmed", role: "IT Manager" },
-  { text: "The support team is exceptional, guiding us through setup and ongoing assistance.", image: "https://randomuser.me/api/portraits/women/3.jpg", name: "Saman Malik", role: "Customer Support Lead" },
-  { text: "Seamless integration enhanced our business operations and efficiency.", image: "https://randomuser.me/api/portraits/men/4.jpg", name: "Omar Raza", role: "CEO" },
-  { text: "Robust features and quick support have transformed our workflow.", image: "https://randomuser.me/api/portraits/women/5.jpg", name: "Zainab Hussain", role: "Project Manager" },
-  { text: "The smooth implementation exceeded expectations, improving overall performance.", image: "https://randomuser.me/api/portraits/women/6.jpg", name: "Aliza Khan", role: "Business Analyst" },
-  { text: "Our business functions improved with a user-friendly design.", image: "https://randomuser.me/api/portraits/men/7.jpg", name: "Farhan Siddiqui", role: "Marketing Director" },
-  { text: "They delivered a solution that exceeded expectations.", image: "https://randomuser.me/api/portraits/women/8.jpg", name: "Sana Sheikh", role: "Sales Manager" },
-  { text: "Our online presence and conversions significantly improved.", image: "https://randomuser.me/api/portraits/men/9.jpg", name: "Hassan Ali", role: "E-commerce Manager" },
+  // Replace with real testimonials — these are structural placeholders
+  { text: "Replaced three tools and the whole team got faster.", image: "/avatars/1.jpg", name: "Alex Rivera", role: "Engineering Lead" },
+  { text: "Setup was smooth. The interface made onboarding effortless.", image: "/avatars/2.jpg", name: "Jordan Lee", role: "Product Manager" },
+  { text: "Support team guided us through every step.", image: "/avatars/3.jpg", name: "Sam Chen", role: "Customer Success" },
+  { text: "Integration was seamless — improved our workflow immediately.", image: "/avatars/4.jpg", name: "Taylor Kim", role: "CTO" },
+  { text: "The features transformed how we collaborate.", image: "/avatars/5.jpg", name: "Morgan Park", role: "Design Lead" },
+  { text: "Exceeded expectations across the board.", image: "/avatars/6.jpg", name: "Casey Wu", role: "Operations" },
+  { text: "User-friendly design that our whole team adopted.", image: "/avatars/7.jpg", name: "Riley Patel", role: "Marketing" },
+  { text: "Delivered exactly what we needed, fast.", image: "/avatars/8.jpg", name: "Avery Santos", role: "Sales" },
+  { text: "Our metrics improved significantly after switching.", image: "/avatars/9.jpg", name: "Drew Nguyen", role: "Growth" },
 ];
 
 const firstColumn = testimonials.slice(0, 3);
@@ -1033,10 +1035,10 @@ interface Navbar1Props {
 
 const Navbar1 = ({
   logo = {
-    url: "https://www.shadcnblocks.com",
-    src: "https://www.shadcnblocks.com/images/block/block-1.svg",
+    url: "/",
+    src: "/logo.svg",
     alt: "logo",
-    title: "Shadcnblocks.com",
+    title: "YourBrand",
   },
   menu = [
     { title: "Home", url: "#" },
@@ -1431,7 +1433,7 @@ export function Calendar() {
   const firstDayOfWeek = firstDayOfMonth.getDay();
   const daysInMonth = new Date(currentYear, currentDate.getMonth() + 1, 0).getDate();
 
-  const bookingLink = `https://cal.com/aliimam/designali`;
+  const bookingLink = `/book`; // Replace with actual booking URL
 
   const renderCalendarDays = () => {
     let days: React.ReactNode[] = [
