@@ -48,8 +48,7 @@ target_for() {
       if [ "$SCOPE" = "global" ]; then echo "$HOME/.config/opencode/skills/svvarm"
       else echo "$(pwd)/.opencode/skills/svvarm"; fi ;;
     cursor)
-      if [ "$SCOPE" = "global" ]; then
-        echo ""  # signals unsupported
+      if [ "$SCOPE" = "global" ]; then echo "$HOME/.cursor/skills/svvarm"
       else echo "$(pwd)/.cursor/skills/svvarm"; fi ;;
   esac
 }
@@ -57,12 +56,6 @@ target_for() {
 install_one() {
   tool="$1"
   target="$(target_for "$tool")"
-
-  if [ "$tool" = "cursor" ] && [ -z "$target" ]; then
-    echo "✗ cursor: Cursor only supports project-level skills."
-    echo "  Re-run inside your project: ./install.sh cursor --project"
-    return 1
-  fi
 
   if [ "$UNINSTALL" = 1 ]; then
     if [ -L "$target" ] || [ -d "$target" ]; then
@@ -94,14 +87,9 @@ install_one() {
 
 if [ "$TOOL" = "all" ]; then
   status=0
-  for t in claude codex opencode; do
+  for t in claude codex opencode cursor; do
     install_one "$t" || status=1
   done
-  if [ "$UNINSTALL" = 0 ] && [ "$SCOPE" = "global" ]; then
-    echo "- cursor: project-only — run './install.sh cursor --project' inside each project"
-  else
-    install_one cursor || status=1
-  fi
 else
   install_one "$TOOL"
   status=$?

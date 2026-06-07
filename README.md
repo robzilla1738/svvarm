@@ -36,7 +36,7 @@ cd svvarm
 ./install.sh claude              # → ~/.claude/skills/svvarm
 ./install.sh codex               # → ~/.codex/skills/svvarm
 ./install.sh opencode            # → ~/.config/opencode/skills/svvarm
-./install.sh cursor --project    # → ./.cursor/skills/svvarm (Cursor is project-only)
+./install.sh cursor              # → ~/.cursor/skills/svvarm
 ./install.sh all                 # all of the above
 ```
 
