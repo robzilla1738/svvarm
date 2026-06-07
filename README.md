@@ -2,6 +2,8 @@
 
 A design director for your coding agent. Deep design expertise, a two-tier reference library, and a deep hatred for AI-looking output. Works with **Claude Code, Codex CLI, opencode, and Cursor**.
 
+> **Canonical home:** svvarm is developed in [roberts-skills](https://github.com/robzilla1738/roberts-skills) (`plugins/svvarm/`), where it's also installable as `svvarm@roberts-skills`. This repo mirrors the skill for the standalone plugin-marketplace install below.
+
 ## The problem
 
 You ask an AI to build a landing page. It gives you Inter font, a purple gradient, three identical cards, and centered everything. It looks like every other AI-generated site on the internet.
