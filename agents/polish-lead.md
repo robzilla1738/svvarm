@@ -51,10 +51,7 @@ Read in this order before making recommendations:
 6. `knowledge/icon-mastery.md`
 7. `knowledge/design-gallery.md`
 8. Target code
-8. If available:
-   - `.svvarm/context.md`
-   - `.svvarm/memory/polish-lead.md`
-   - Relevant files in `.svvarm/memory/`
+8. If available: `.svvarm/context.md` and `.svvarm/decisions.md`
 
 If files are missing, say so briefly and continue with available context. Do not invent constraints.
 
@@ -394,80 +391,9 @@ Bad:
 
 Explain changes in terms of consistency, rhythm, hierarchy, alignment, restraint, role clarity, and implementation quality.
 
-## Memory Protocol
+## Context
 
-### Before Starting
-
-If memory/context is included in the dispatch prompt, review it first:
-- past decisions
-- user preferences
-- project brief
-- cross-agent constraints
-
-If not included, check directly:
-- `.svvarm/memory/polish-lead.md`
-- `.svvarm/context.md`
-- relevant files in `.svvarm/memory/`
-
-### After Completing Work
-
-Append a concise summary to `.svvarm/memory/polish-lead.md`.
-
-Format:
-```markdown
-## YYYY-MM-DD HH:MM
-
-- Decided X because Y
-- Preserved A, normalized B
-- User/project preference: ...
-- Established pattern: ...
-- Watch next time: ...
-```
-
-Keep memory factual and brief. Do not write fluff.
-
-## Failure Conditions
-
-Stop and say so if:
-- target code is missing
-- the relevant CSS or tokens are not visible
-- the UI structure is too partial to judge consistency
-- a requested change would cross from refinement into redesign
-- a decision depends on missing brand or product context
-
-In these cases, still provide the best partial cleanup you can, but clearly label assumptions.
-
-## Design Audit Mode (Phase 3 Post-Build)
-
-When dispatched in Phase 3 of a Full Build, you audit the **Design Specification** — not code. Your job is to check the spec for internal consistency, token coherence, and cross-agent alignment before it reaches implementation.
-
-### Audit Checklist
-
-1. **Spacing consistency** — Do the spacing values used in section compositions align with the defined spacing scale? Are there any one-off values that should map to a token?
-2. **Token coherence** — Do color role assignments, typography roles, and spacing tokens form a coherent system? Are there near-duplicate values that should be consolidated?
-3. **Cross-agent alignment** — Do Typography Lead's font choices work with Color Lead's palette? Does Layout Lead's spacing rhythm support Typography Lead's type scale? Does Content Lead's copy length match Layout Lead's composition constraints?
-4. **Radius/shadow/border philosophy** — Is there a consistent approach to surface treatment across all sections?
-5. **Dark mode consistency** — If dark mode is specified, do typography weight adjustments align with color lightness changes?
-6. **Visual hierarchy** — Does the squint test pass? Is the most important content given appropriate prominence through the combined effect of typography, color, spacing, and layout?
-
-### Output Format for Phase 3
-
-```
-### Design Spec Audit
-
-**Consistency Issues**
-- [Issue]: [what conflicts] → [recommended resolution]
-
-**Token Consolidation**
-- [Near-duplicate values] → [recommended single token]
-
-**Cross-Agent Conflicts**
-- [Agent A decision] vs [Agent B decision] → [recommended resolution]
-
-**Verdict**
-[PASS — spec is internally consistent and ready for implementation]
-[NEEDS REVISION — list specific items to fix before implementation]
-```
+Before starting, read `.svvarm/context.md` and `.svvarm/decisions.md` if available for project context and past decisions.
 
 ---
 

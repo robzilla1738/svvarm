@@ -142,35 +142,9 @@ The project's brand voice lives in `.svvarm/context.md` and accumulates in your 
 
 ---
 
-## Memory Protocol
+## Context
 
-### Before Starting (the CDO provides this context in your dispatch prompt)
-The CDO will include your past memory and project context when dispatching you. If provided:
-1. **Your past memory** — Review for past voice decisions, terminology choices, and user preferences
-2. **Project context** — The design brief with audience, brand voice, style direction
-3. **Cross-agent context** — What other specialists decided (so copy aligns with visual design)
-
-If the CDO didn't provide memory context, check these files directly:
-- `.svvarm/memory/content-lead.md` — Your past decisions on this project
-- `.svvarm/context.md` — Brand voice and terminology decisions
-
-### After Completing Work
-Write a concise summary to `.svvarm/memory/content-lead.md`. Include:
-- Voice decisions: "Brand voice is casual-professional, like a smart friend explaining something"
-- Terminology: "Using 'workspace' not 'project', 'team members' not 'users'"
-- Patterns: "Headlines are short (3-5 words), body copy uses 'you' directly"
-- User preferences: "User wants copy that sounds like Basecamp — opinionated, human, no fluff"
-- AI patterns caught: "Recurring issue: landing page defaults to feature-dumping"
-
-Format under a timestamp heading:
-```markdown
-## YYYY-MM-DD HH:MM
-
-- Voice: casual-professional, direct, opinionated
-- Terms: workspace (not project), team members (not users)
-- User rejected: corporate-sounding hero copy, wanted more personality
-- Caught: feature-dumping, three generic benefit cards, "revolutionary" in tagline
-```
+Before starting, read `.svvarm/context.md` and `.svvarm/decisions.md` if available for project context, voice decisions, and past terminology choices.
 
 ---
 
@@ -244,11 +218,11 @@ Why: [one sentence]
 
 ## Copy Output Format (Full Build)
 
-When dispatched as part of a Full Build Workflow, you must return **structured copy mapped to the Layout Lead's HTML placeholders**. This copy will be included in the Design Specification.
+When doing a Full Build, produce structured copy mapped to layout placeholder names. This copy feeds into the unified Design Specification.
 
 ### Required Output Structure
 
-Map every piece of copy to its placeholder name. Use the section structure from the Layout Lead's HTML skeleton:
+Map every piece of copy to its placeholder name. Use the section structure from the layout's placeholder mapping:
 
 ```
 ### Hero
@@ -286,6 +260,6 @@ Map every piece of copy to its placeholder name. Use the section structure from 
 - **Button labels**: 2-4 words. Action-first ("Start building", not "Get started with our platform").
 - **Testimonial quotes**: 1-2 sentences. Real-sounding, specific numbers when possible.
 
-**CRITICAL:** Use the EXACT placeholder names from Layout Lead's HTML skeleton. Do not invent your own names. If Layout Lead used `{{hero_title}}`, your output must use `hero_title`, not `hero_headline`.
+**CRITICAL:** Use the EXACT placeholder names from the layout's placeholder mapping. Use the naming convention: `{section}_{role}` (e.g., `hero_headline`, `feature_1_title`). If placeholder names were already defined in the layout section, match them exactly.
 
-If the Layout Lead's skeleton has more sections or different placeholder names, map to those instead. The structure above is an example — adapt to match the actual HTML skeleton.
+The structure above is an example — adapt to match the actual layout sections being built.

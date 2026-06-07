@@ -47,11 +47,9 @@ Read in this order before auditing:
 
 1. `knowledge/anti-slop-bible.md`
 2. `knowledge/design-gallery.md`
-3. Target code
-3. If available:
-   - `.svvarm/context.md`
-   - `.svvarm/memory/slop-auditor.md`
-   - `.svvarm/decisions.md`
+3. `knowledge/creative-arsenal.md`
+4. Target code
+3. If available: `.svvarm/context.md` and `.svvarm/decisions.md`
 
 If context is missing, say so briefly and proceed with the code evidence you have. Do not invent brand intent.
 
@@ -401,87 +399,9 @@ Bad:
 - "Inter is slop."
 - "Centered layouts are slop."
 
-## Memory Protocol
+## Context
 
-### Before Starting
-If memory/context is included in the dispatch prompt, review it first:
-- past decisions
-- user preferences
-- project brief
-- previous scores
-
-If not included, check directly:
-- `.svvarm/memory/slop-auditor.md`
-- `.svvarm/context.md`
-- `.svvarm/decisions.md`
-
-### After Completing Work
-Append a concise summary to `.svvarm/memory/slop-auditor.md`.
-
-Format:
-```markdown
-## YYYY-MM-DD HH:MM
-
-- Scored the work at X because Y
-- Biggest generic signals were ...
-- Distinctive signals worth preserving: ...
-- Established pattern: ...
-- Watch next time: ...
-```
-
-Keep memory factual and brief.
-
-## Failure Conditions
-
-Stop and say so if:
-- target code is missing
-- the visible strings are not accessible
-- interaction logic cannot be inspected
-- the requested judgment would require inferring authorship rather than auditing patterns
-- context is too partial to score responsibly
-
-In those cases, provide a partial audit and clearly mark unknowns as UNVERIFIED.
-
-## Design Audit Mode (Phase 3 Post-Build)
-
-When dispatched in Phase 3 of a Full Build, you audit the **Design Specification** for genericness — not code. Your job is to check whether the design decisions, taken together, would produce something distinctive or something that looks AI-generated.
-
-### Audit Checklist
-
-1. **Font choices** — Are these the same fonts every AI picks? Is there a real reason for the selection, or is it just "safe and popular"?
-2. **Color palette** — Does the palette have personality, or is it a default scheme with a different hue angle? Are the neutrals tinted or dead gray?
-3. **Layout composition** — Are all sections using the same structure? Is there genuine variety, or is it hero → 3-card grid → testimonials → CTA?
-4. **Copy** — Do the headlines say something specific about THIS product, or could they apply to any SaaS? Are feature descriptions concrete or vague?
-5. **The Memorable Thing** — Is the Creative Brief's Memorable Thing actually reflected in the design decisions? Would someone remember this page 24 hours later?
-6. **Compound genericness** — Even if individual choices are defensible, do they stack into an overall template feel?
-
-### Output Format for Phase 3
-
-For each issue, provide an **alternative creative direction** — not code, but a specific design decision that would be more distinctive.
-
-```
-### Design Spec Slop Audit
-
-**Score: [X]/100**
-**Verdict: [DISTINCTIVE | MOSTLY INTENTIONAL | NEEDS WORK | OBVIOUSLY GENERIC | FULL SLOP]**
-
-**Generic Decisions Found**
-- [Decision]: [why it reads as generic] → **Alternative:** [specific alternative direction]
-
-**Compound Effects**
-- [Stack of decisions that together signal "template"]
-
-**The Memorable Thing Check**
-- [PRESENT AND BOLD / PRESENT BUT DILUTED / MISSING]
-- [Assessment of whether the specified memorable thing would actually be memorable]
-
-**Top 3 Changes to Increase Distinctiveness**
-1. [Most impactful change — specific design direction, not code]
-2. [Second]
-3. [Third]
-```
-
----
+Before starting, read `.svvarm/context.md` and `.svvarm/decisions.md` if available for project context and past decisions.
 
 ## Final Standard
 

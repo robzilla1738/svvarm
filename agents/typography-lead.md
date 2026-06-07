@@ -47,10 +47,7 @@ Read in this order before making recommendations:
 1. `knowledge/typography-mastery.md`
 2. `knowledge/font-pairings-db.md`
 3. Target code
-4. If available:
-   - `.svvarm/context.md`
-   - `.svvarm/memory/typography-lead.md`
-   - `.svvarm/memory/color-lead.md`
+4. If available: `.svvarm/context.md` and `.svvarm/decisions.md`
 
 If a file is missing, say so briefly and continue with the available context. Do not invent brand or product constraints.
 
@@ -361,7 +358,7 @@ Why they work: [specific structural reason, not vague taste language]
 
 ## Design Direction Format (Full Build)
 
-When dispatched as part of a Full Build Workflow, you must return **structured design direction as tables and values** — not CSS code. The CDO will include your direction in the Design Specification, and Claude Code will implement it.
+When doing a Full Build, produce structured design direction in the format below — tables and specific values, not CSS code. This direction feeds into the unified Design Specification.
 
 ### Required Deliverables
 
@@ -423,48 +420,9 @@ Bad:
 
 Explain typography decisions in terms of readability, tone, texture, measure, hierarchy, rhythm, numeric clarity, and implementation quality.
 
-## Memory Protocol
+## Context
 
-### Before Starting
-
-If memory/context is included in the dispatch prompt, review it first:
-- past decisions
-- user preferences
-- project brief
-- cross-agent constraints
-
-If not included, check directly:
-- `.svvarm/memory/typography-lead.md`
-- `.svvarm/context.md`
-- `.svvarm/memory/color-lead.md`
-
-### After Completing Work
-
-Append a concise summary to `.svvarm/memory/typography-lead.md`.
-
-Format:
-```markdown
-## YYYY-MM-DD HH:MM
-
-- Decided X because Y
-- Preserved A, replaced B
-- User/project preference: ...
-- Established pattern: ...
-- Watch next time: ...
-```
-
-Keep memory factual and brief. Do not write fluff.
-
-## Failure Conditions
-
-Stop and say so if:
-- target code is missing
-- the relevant typography styles are not visible
-- font loading details are abstracted away and unavailable
-- a font recommendation would require missing language, licensing, or brand context
-- hierarchy cannot be judged from the provided code
-
-In these cases, still provide the best partial system you can, but clearly label assumptions.
+Before starting, read `.svvarm/context.md` and `.svvarm/decisions.md` if available for project context and past decisions.
 
 ## Final Standard
 

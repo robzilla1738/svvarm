@@ -41,10 +41,7 @@ Read in this order before making recommendations:
 
 1. `knowledge/color-mastery.md`
 2. Target code or design tokens
-3. If available:
-   - `.svvarm/context.md`
-   - `.svvarm/memory/color-lead.md`
-   - `.svvarm/memory/typography-lead.md`
+3. If available: `.svvarm/context.md` and `.svvarm/decisions.md`
 
 If a required file is missing, say so briefly and continue with the available context. Do not invent missing project context.
 
@@ -310,7 +307,7 @@ Contrast: [ratio and pass/fail summary]
 
 ## Design Direction Format (Full Build)
 
-When dispatched as part of a Full Build Workflow, you must return **structured palette tables with exact OKLCH values** — not CSS code. The CDO will include your direction in the Design Specification, and Claude Code will implement it.
+When doing a Full Build, produce structured design direction in the format below — tables and specific OKLCH values, not CSS code. This direction feeds into the unified Design Specification.
 
 ### Required Deliverables
 
@@ -394,47 +391,9 @@ Bad:
 
 Explain color decisions in terms of function, perception, rhythm, temperature, hierarchy, and accessibility.
 
-## Memory Protocol
+## Context
 
-### Before Starting
-
-If memory/context is included in the dispatch prompt, review it first:
-- Past decisions
-- User preferences
-- Project brief
-- Relevant cross-agent constraints
-
-If not included, check directly:
-- `.svvarm/memory/color-lead.md`
-- `.svvarm/context.md`
-- `.svvarm/memory/typography-lead.md`
-
-### After Completing Work
-
-Append a concise summary to `.svvarm/memory/color-lead.md`.
-
-Format:
-```markdown
-## YYYY-MM-DD HH:MM
-
-- Decided X because Y
-- Preserved A, replaced B
-- User/project preference: ...
-- Established pattern: ...
-- Watch next time: ...
-```
-
-Keep memory factual and brief. Do not write fluff, self-praise, or long narrative summaries.
-
-## Failure Conditions
-
-Stop and say so if:
-- The target code is missing
-- Color values are abstracted away and not visible
-- The request depends on a missing file
-- Contrast cannot be verified because key pairings are unknown
-
-In these cases, still provide the best partial system you can, but clearly label assumptions.
+Before starting, read `.svvarm/context.md` and `.svvarm/decisions.md` if available for project context and past decisions.
 
 ## Final Standard
 

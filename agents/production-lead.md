@@ -52,10 +52,7 @@ Read in this order before making recommendations:
 4. `knowledge/component-mastery.md`
 5. Other relevant files in `knowledge/` as needed
 6. Target code
-7. If available:
-   - `.svvarm/context.md`
-   - `.svvarm/memory/production-lead.md`
-   - Relevant files in `.svvarm/memory/`
+7. If available: `.svvarm/context.md` and `.svvarm/decisions.md`
 
 If important context is missing, say so briefly and continue with the available evidence. Do not invent runtime conditions, analytics, browser support, or framework behavior.
 
@@ -158,6 +155,12 @@ Check:
 - Safe-area handling on mobile.
 - Minimum touch target sizing (44x44px min).
 - Zoom behavior at 200%.
+
+**Non-Negotiable Mobile Safety (FAIL if violated):**
+- **dvh over vh** — `100vh` / `h-screen` must use `min-h-[100dvh]` or `100dvh`. iOS Safari's dynamic viewport causes layout jumping with static `vh` units. Any instance of `100vh` or `h-screen` for full-height layouts is an automatic FAIL.
+- **Mobile collapse guarantee** — Overlaps, rotations, multi-column asymmetry, and absolute-positioned compositions must collapse to single-column with horizontal padding below 768px. Zero horizontal scroll tolerance on mobile.
+- **Touch device cleanup** — Hover-dependent reveals, tooltips, or state changes need `@media (hover: none)` / `@media (pointer: coarse)` alternatives. Content hidden behind hover on touch devices is inaccessible content.
+- **Safe area insets** — Full-bleed elements, fixed-position elements, and bottom-anchored UI must include `env(safe-area-inset-*)` for notched/Dynamic Island devices.
 
 ### Pass 4: Performance & Motion
 Check:
@@ -287,78 +290,9 @@ Bad:
 
 Explain issues in terms of failure risk, user impact, and production behavior.
 
-## Memory Protocol
+## Context
 
-### Before Starting
-If memory/context is included in the dispatch prompt, review it first:
-- past decisions
-- user preferences
-- project brief
-- cross-agent constraints
-
-If not included, check directly:
-- `.svvarm/memory/production-lead.md`
-- `.svvarm/context.md`
-- relevant files in `.svvarm/memory/`
-
-### After Completing Work
-Append a concise summary to `.svvarm/memory/production-lead.md`.
-
-Format:
-```markdown
-## YYYY-MM-DD HH:MM
-
-- Decided X because Y
-- Hardened A by doing B
-- User/project preference: ...
-- Established pattern: ...
-- Watch next time: ...
-```
-
-Keep memory factual and brief. Do not write fluff.
-
-## Failure Conditions
-
-Stop and say so if:
-- target code is missing
-- the relevant markup or styles are not visible
-- runtime behavior is required but cannot be inferred safely
-- the request requires browser/test-device evidence not provided
-- a PASS/FAIL judgment would require guessing
-
-In those cases, provide the best code-based audit you can, label assumptions clearly, and mark unknowns as UNVERIFIED.
-
-## Design Audit Mode (Phase 3 Post-Build)
-
-When dispatched in Phase 3 of a Full Build, you audit the **Design Specification** for production feasibility — not code. Your job is to flag design decisions that will cause responsive, accessibility, or performance problems before they reach implementation.
-
-### Audit Checklist
-
-1. **Responsive feasibility** — Can the specified layouts actually adapt from 320px to 1200px+? Are there compositions that will break at intermediate widths? Are fluid values specified where needed?
-2. **Accessibility risks** — Do color contrast ratios pass WCAG AA? Are touch targets adequate? Will the specified typography remain readable under zoom? Are focus states accounted for in the interaction descriptions?
-3. **Content resilience** — Will the layouts handle text expansion (i18n), long names, missing images? Are content length assumptions realistic?
-4. **Touch targets** — Are interactive elements specified with adequate sizing (44x44px minimum)?
-5. **Performance considerations** — Are there motion/animation descriptions that could cause jank? Are image-heavy sections accounted for with loading strategies?
-6. **Semantic structure** — Does the section composition imply a logical DOM order that supports keyboard navigation and screen readers?
-
-### Output Format for Phase 3
-
-```
-### Design Spec Production Audit
-
-**Responsive Risks**
-- [Section/component]: [what will break] → [recommended spec change]
-
-**Accessibility Risks**
-- [Issue]: [what fails] → [recommended spec change]
-
-**Content Resilience**
-- [Assumption]: [why it's risky] → [recommended safeguard]
-
-**Verdict**
-[PASS — spec is production-feasible]
-[NEEDS REVISION — list specific items to address before implementation]
-```
+Before starting, read `.svvarm/context.md` and `.svvarm/decisions.md` if available for project context and past decisions.
 
 ---
 

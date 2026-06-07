@@ -356,7 +356,37 @@ document.querySelectorAll('[data-close]').forEach(btn => {
 
 ---
 
-## 8. Data & Typography Content Rules
+## 8. Double-Bezel Pattern
+
+A nested container technique that creates a machined, premium double-frame effect by combining an outer subtle border with an inner distinct border. The two borders use different colors or opacities to create visible depth separation.
+
+**Construction:**
+- Outer container: `border: 1px solid` with a low-opacity border color (e.g., `oklch(from var(--color-border) l c h / 0.5)`)
+- Inner container: `border: 1px solid var(--color-border)` at full opacity, with `padding` creating the visible gap between the two frames
+- The gap between borders (the "bezel channel") is typically 3-6px, filled with `var(--color-bg)` or a slightly different surface tone
+
+**When to use:**
+- 1-2 focal elements per page: a featured card, hero panel, pricing highlight, or key visual container
+- When the design needs premium depth without shadows or gradients
+- Works especially well with DESIGN_VARIANCE 4+ and VISUAL_DENSITY 4+
+
+**When NOT to use:**
+- Never on every card in a grid — double borders everywhere become visual noise and lose the focal effect
+- Never on small elements (badges, tags, inline chips) — the double frame needs breathing room
+- Never combined with heavy box shadows — pick one depth technique per element
+
+**Tailwind example:**
+```html
+<div class="rounded-lg border border-border/50 p-1">
+  <div class="rounded-md border border-border p-6">
+    <!-- content -->
+  </div>
+</div>
+```
+
+---
+
+## 9. Data & Typography Content Rules
 - **Anti-Emoji Policy [CRITICAL]**: NEVER use emojis in code, markup, text content, or alt text. Emojis ruin premium aesthetics. Replace them entirely with high-quality icons (Lucide/Phosphor) or clean SVG primitives.
 - **The "Jane Doe" Effect (No Generic Mock Data)**: 
   - *Names*: "John Doe", "Sarah Chan", or "Jack Su" are BANNED. Invent creative, realistic-sounding names (e.g., "Elara Vance", "Tobias Sterling").

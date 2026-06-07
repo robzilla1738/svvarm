@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "svvarm",
-      "description": "Opinionated design director for frontend interfaces. Orchestrates 7 specialist agents for typography, color, layout, content, polish, production, and slop detection.",
+      "description": "Opinionated design director for frontend interfaces. Deep expertise in typography, color, layout, content, and slop detection. One command, zero AI slop.",
       "version": "1.0.0",
       "author": {
         "name": "Robert",
