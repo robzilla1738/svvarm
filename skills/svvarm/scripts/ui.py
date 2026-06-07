@@ -1,10 +1,8 @@
-# /// script
-# requires-python = ">=3.10"
-# dependencies = []
-# ///
+#!/usr/bin/env python3
 """
 svvarm terminal UI — rainbow effects, spinners, banners.
-Outputs to stderr so it shows live in Claude Code terminal.
+Stdlib only — runs with any python3. Outputs to stderr so it
+shows live in the host terminal.
 """
 
 import math
@@ -117,7 +115,7 @@ def _full_rainbow_text(text: str, offset: int = 0) -> str:
     result.append(RESET)
     return "".join(result)
 
-def show_banner(animate: bool = True, size: str | None = None):
+def show_banner(animate: bool = True, size: Optional[str] = None):
     """Show the svvarm rainbow banner with spectrum wave."""
     wave_top = WAVE_UP * 3
     wave_bot = WAVE_DOWN * 3

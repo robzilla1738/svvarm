@@ -325,9 +325,9 @@ When suggesting a pairing in live work:
 5. Prefer superfamilies for technical, enterprise, and accessibility-sensitive work.
 6. Only recommend a more expressive pairing when the layout and copy are strong enough to support it.
 
-## Output Format for Agents
+## When Recommending a Pairing
 
-When recommending a pairing, always include:
+Always include:
 
 * **Heading**
 * **Body**

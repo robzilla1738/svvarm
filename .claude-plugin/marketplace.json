@@ -10,7 +10,7 @@
     {
       "name": "svvarm",
       "description": "Opinionated design director for frontend interfaces. Deep expertise in typography, color, layout, content, and slop detection. One command, zero AI slop.",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "author": {
         "name": "Robert",
         "url": "https://github.com/robzilla1738"
